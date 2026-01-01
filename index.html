@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Advanced Research Calculator (CI & Effect Size)</title>
+    <title>Advanced Research Calculator (Welch's t-test)</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
@@ -141,7 +141,10 @@
             background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 15px;
             border-radius: 0 8px 8px 0; margin: 15px 0; font-style: italic; color: #0369a1;
         }
-
+        .academic-note {
+            background: #fff5f5; border: 1px solid #fed7d7; color: #c53030;
+            padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 0.9rem;
+        }
 
         /* =========================================
            PRINT STYLES (A4 Optimized)
@@ -258,7 +261,7 @@
             
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-label">t-statistic</div>
+                    <div class="stat-label">t-statistic (Welch)</div>
                     <div class="stat-value" id="tStatVal">--</div>
                     <div class="stat-desc" style="color:#666;">df = <span id="dfVal">--</span></div>
                 </div>
@@ -305,7 +308,7 @@
 
         <div class="academic-topic">
             <h3>1️⃣ สูตรการคำนวณ SE (Standard Error)</h3>
-            <p>กรณีศึกษานี้ใช้การเปรียบเทียบค่าเฉลี่ย 2 กลุ่มอิสระ (Independent samples):</p>
+            <p>กรณีศึกษานี้ใช้การเปรียบเทียบค่าเฉลี่ย 2 กลุ่มอิสระ (Independent samples) โดยใช้ Welch's t-test (Unequal Variances):</p>
             <div class="formula-display">
                 $$ SE_{\bar{X}_1-\bar{X}_2} = \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
             </div>
@@ -338,6 +341,11 @@
                 $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
             </div>
         </div>
+
+        <div class="academic-note">
+             <b>⚠️ หมายเหตุเรื่อง Degrees of Freedom (df):</b><br>
+             โปรแกรมนี้คำนวณ df โดยใช้สูตร <b>Welch-Satterthwaite equation</b> ซึ่งมีความแม่นยำสูงกว่าสูตร $n_1+n_2-2$ ในกรณีที่ความแปรปรวนของสองกลุ่มไม่เท่ากัน (Unequal Variances)
+        </div>
         
         <div style="font-size:0.8rem; text-align:center; color:#999; margin-top:30px;">
             Developed by พว.วิษณุกรณ์ โอยา
@@ -348,7 +356,7 @@
     <div id="printArea" class="print-only">
         <div id="printHeader">
             <h1>รายงานผลการวิเคราะห์ข้อมูลทางสถิติ</h1>
-            <p>Research Statistical Analysis Report (Independent t-test & CI)</p>
+            <p>Research Statistical Analysis Report (Welch's t-test & CI)</p>
         </div>
 
         <div class="report-section">
@@ -395,7 +403,7 @@
                         <th>Mean Diff.</th>
                         <th>Standard Error</th>
                         <th>t-statistic</th>
-                        <th>df</th>
+                        <th>df (Welch)</th>
                         <th>Effect Size (d)</th>
                         <th>95% CI</th>
                     </tr>
@@ -412,7 +420,7 @@
                 </tbody>
             </table>
             
-            <div style="margin-top:10px;"><b>สูตรการคำนวณ:</b></div>
+            <div style="margin-top:10px;"><b>สูตรการคำนวณ (Welch's t-test):</b></div>
             <div class="formula-print-box">
                  $$ CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
             </div>
@@ -481,7 +489,7 @@
         });
     }
 
-    // --- Calculation Engine ---
+    // --- Calculation Engine (Fixed Welch's DF Logic) ---
     function calculateStats() {
         const m1 = parseFloat(document.getElementById('m1').value);
         const sd1 = parseFloat(document.getElementById('sd1').value);
@@ -492,22 +500,28 @@
 
         if(n1 <=0 || n2 <=0) return null;
 
-        // Basic CI Stats
+        // 1. Welch SE
         const diff = m1 - m2;
         const var1 = Math.pow(sd1, 2)/n1;
         const var2 = Math.pow(sd2, 2)/n2;
         const se = Math.sqrt(var1 + var2);
+        
+        // 2. Margin of Error
         const me = 1.96 * se;
         const lower = diff - me;
         const upper = diff + me;
         const isSig = (lower * upper > 0);
 
-        // Advanced Stats (t, df, Cohen's d)
-        // df (Simple approximation)
-        const df = n1 + n2 - 2;
-        // t-value
+        // 3. Welch-Satterthwaite DF (FIXED)
+        const num = Math.pow(var1 + var2, 2);
+        const den = (Math.pow(var1, 2)/(n1-1)) + (Math.pow(var2, 2)/(n2-1));
+        const df = num / den;
+
+        // 4. t-value
         const tVal = diff / se;
-        // Cohen's d (Requires Pooled SD)
+
+        // 5. Cohen's d (Using Pooled SD for Effect Size Standard)
+        // Effect size usually uses pooled SD even if t-test is Welch, to standardize magnitude
         const pooledVar = ((n1-1)*Math.pow(sd1,2) + (n2-1)*Math.pow(sd2,2)) / (n1+n2-2);
         const pooledSD = Math.sqrt(pooledVar);
         const dVal = diff / pooledSD;
@@ -529,7 +543,7 @@
 
         // Update Advanced Stats Cards
         document.getElementById('tStatVal').innerText = res.tVal.toFixed(2);
-        document.getElementById('dfVal').innerText = res.df;
+        document.getElementById('dfVal').innerText = res.df.toFixed(2); // Show decimal for Welch
         document.getElementById('dStatVal').innerText = Math.abs(res.dVal).toFixed(2);
         
         let dInterp = "";
@@ -559,16 +573,16 @@
         document.getElementById('pMeanDiff').innerText = res.diff.toFixed(2);
         document.getElementById('pSE').innerText = res.se.toFixed(4);
         document.getElementById('pTVal').innerText = res.tVal.toFixed(3);
-        document.getElementById('pDf').innerText = res.df;
+        document.getElementById('pDf').innerText = res.df.toFixed(2);
         document.getElementById('pCohen').innerText = res.dVal.toFixed(2) + ` (${dInterp})`;
         document.getElementById('pCI').innerText = `[${res.lower.toFixed(2)}, ${res.upper.toFixed(2)}]`;
 
         // Conclusion Text
         let reportText = "";
         if(res.isSig) {
-            reportText = `ผลการวิเคราะห์พบว่า กลุ่มทดลอง (Mean=${res.m1}) มีคะแนนเฉลี่ยแตกต่างจากกลุ่มควบคุม (Mean=${res.m2}) อย่างมีนัยสำคัญทางสถิติ ($t(${res.df})=${res.tVal.toFixed(2)}, p<.05$) โดยมีค่าขนาดอิทธิพล (Effect Size) อยู่ในระดับ<b>${dInterp}</b> ($d=${Math.abs(res.dVal).toFixed(2)}$) และมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ยอยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งไม่ครอบคลุมศูนย์`;
+            reportText = `ผลการวิเคราะห์พบว่า กลุ่มทดลอง (Mean=${res.m1}) มีคะแนนเฉลี่ยแตกต่างจากกลุ่มควบคุม (Mean=${res.m2}) อย่างมีนัยสำคัญทางสถิติ ($t(${res.df.toFixed(2)})=${res.tVal.toFixed(2)}, p<.05$) โดยมีค่าขนาดอิทธิพล (Effect Size) อยู่ในระดับ<b>${dInterp}</b> ($d=${Math.abs(res.dVal).toFixed(2)}$) และมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ยอยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งไม่ครอบคลุมศูนย์`;
         } else {
-            reportText = `ผลการวิเคราะห์พบว่า กลุ่มทดลอง (Mean=${res.m1}) และกลุ่มควบคุม (Mean=${res.m2}) <b>ไม่มีความแตกต่างกัน</b>ทางสถิติ ($t(${res.df})=${res.tVal.toFixed(2)}, p>.05$) โดยมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ยอยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งครอบคลุมค่าศูนย์`;
+            reportText = `ผลการวิเคราะห์พบว่า กลุ่มทดลอง (Mean=${res.m1}) และกลุ่มควบคุม (Mean=${res.m2}) <b>ไม่มีความแตกต่างกัน</b>ทางสถิติ ($t(${res.df.toFixed(2)})=${res.tVal.toFixed(2)}, p>.05$) โดยมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ยอยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งครอบคลุมค่าศูนย์`;
         }
         document.getElementById('printConclusionText').innerHTML = reportText;
 
