@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Futuristic CI Calculator</title>
     
     <link rel="manifest" href="manifest.json">
@@ -24,38 +24,44 @@
             --accent: #667eea;
         }
 
+        /* Global Box Sizing เพื่อไม่ให้ Padding ดันเฟรมแตก */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Sarabun', sans-serif;
             background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
             background-attachment: fixed;
             margin: 0;
-            padding: 40px 20px;
+            padding: 20px 15px; /* ลด Padding ด้านข้างสำหรับมือถือ */
             color: var(--text-main);
             min-height: 100vh;
+            overflow-x: hidden; /* ป้องกันการเลื่อนซ้ายขวาของ Body */
         }
 
         .container {
             max-width: 950px;
             margin: 0 auto;
+            width: 100%;
         }
 
         /* --- Header --- */
         header {
             text-align: center;
-            margin-bottom: 40px;
-            position: relative;
+            margin-bottom: 30px;
         }
         
         .logo-text {
             font-family: 'Prompt', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2.2rem; /* ปรับลดลงเล็กน้อยเพื่อให้ safe กับมือถือ */
             font-weight: 600;
             background: -webkit-linear-gradient(#4a00e0, #8e2de2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
             letter-spacing: -1px;
-            text-shadow: 0px 4px 15px rgba(142, 45, 226, 0.15);
+            line-height: 1.2;
         }
         
         .sub-header {
@@ -66,6 +72,7 @@
             padding: 5px 15px;
             border-radius: 20px;
             margin-top: 10px;
+            font-size: 0.9rem;
             backdrop-filter: blur(4px);
         }
 
@@ -75,55 +82,51 @@
             box-shadow: var(--shadow-soft);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-radius: 24px;
+            border-radius: 20px;
             border: var(--glass-border);
-            padding: 40px;
-            margin-bottom: 30px;
-            transition: transform 0.3s ease;
+            padding: 25px; /* ลด padding เพื่อเพิ่มพื้นที่ในมือถือ */
+            margin-bottom: 25px;
+            width: 100%;
         }
 
         .section-title {
             font-family: 'Prompt';
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--accent);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
-        .section-title i { font-size: 1.4rem; }
 
         /* --- Inputs --- */
-        .input-group { margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 500;
             color: #4a5568;
             font-size: 0.9rem;
         }
         input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 12px;
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             font-family: 'Sarabun';
             font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            box-sizing: border-box;
         }
         input:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
-            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
         }
 
         /* --- Grid Layouts --- */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
         /* --- Co-Researcher Tags --- */
         .tag-area {
@@ -131,86 +134,95 @@
         }
         .tag {
             background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-            color: #4a5568; padding: 5px 12px; border-radius: 20px;
-            font-size: 0.85rem; display: flex; align-items: center; gap: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            color: #4a5568; padding: 4px 10px; border-radius: 15px;
+            font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
         }
-        .tag i { cursor: pointer; color: #e53e3e; }
 
-        /* --- Result Box (Highlight) --- */
+        /* --- Result Box --- */
         .result-wrapper {
             background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 25px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
             margin-top: 20px;
             display: none;
-            animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 
         .ci-value {
             font-family: 'Prompt';
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(90deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 10px 0;
+            word-wrap: break-word; /* ป้องกันตัวเลขยาวดันจอ */
         }
 
         /* --- Buttons --- */
-        .btn-group { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-group { display: flex; gap: 10px; margin-top: 25px; }
         .btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Prompt';
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            flex: 1; padding: 12px; border: none; border-radius: 12px;
+            font-family: 'Prompt'; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            font-size: 0.95rem;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        
         .btn-primary { background: var(--primary-gradient); color: white; }
         .btn-success { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #0f5132; }
-        .btn-ghost { background: transparent; border: 2px solid #cbd5e0; color: #718096; }
+        .btn-ghost { background: transparent; border: 1px solid #cbd5e0; color: #718096; }
 
-        /* --- Table --- */
-        .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; margin-top: -10px; }
-        .modern-table th {
-            text-align: left; padding: 10px 20px;
-            color: #718096; font-weight: 600; font-size: 0.9rem;
+        /* --- Table Fix for Mobile --- */
+        .table-container {
+            overflow-x: auto; /* สำคัญ: ทำให้ตารางเลื่อนซ้ายขวาได้ไม่ล้นจอ */
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
         }
-        .modern-table td {
-            background: rgba(255,255,255,0.6);
-            padding: 15px 20px;
-            backdrop-filter: blur(5px);
+        .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; min-width: 600px; /* บังคับความกว้างขั้นต่ำ */ }
+        .modern-table th, .modern-table td { padding: 10px 15px; white-space: nowrap; } /* ห้ามตัดคำให้อ่านง่าย */
+        .modern-table td { background: rgba(255,255,255,0.6); backdrop-filter: blur(5px); }
+
+        /* --- Formula Fix for Mobile (MathJax) --- */
+        .formula { 
+            background: rgba(255,255,255,0.5); 
+            padding: 15px; 
+            border-radius: 12px; 
+            text-align: center; 
+            margin: 20px 0; 
+            border: 1px dashed #cbd5e0;
+            
+            /* แก้ปัญหาล้นจอ */
+            overflow-x: auto; 
+            overflow-y: hidden;
+            max-width: 100%;
+            display: block;
         }
-        .modern-table tr td:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
-        .modern-table tr td:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
-        .modern-table tr:hover td { background: white; transform: scale(1.01); transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        
+        /* บังคับ MathJax ให้ Scroll ได้ */
+        mjx-container {
+            overflow-x: auto !important;
+            overflow-y: hidden;
+            max-width: 100% !important;
+            padding: 10px 0;
+        }
 
-        /* --- Knowledge Section --- */
-        .knowledge-box { font-size: 0.95rem; line-height: 1.8; color: #4a5568; }
-        .formula { background: rgba(255,255,255,0.5); padding: 15px; border-radius: 12px; text-align: center; margin: 20px 0; border: 1px dashed #cbd5e0; }
-        .quote { border-left: 4px solid #667eea; padding-left: 15px; margin: 15px 0; font-style: italic; color: #555; background: rgba(102, 126, 234, 0.05); padding: 15px; border-radius: 0 8px 8px 0; }
+        .quote { border-left: 4px solid #667eea; background: rgba(102, 126, 234, 0.05); padding: 15px; border-radius: 0 8px 8px 0; font-size: 0.9rem; }
 
-        /* Print Mode */
+        /* --- Responsive Queries --- */
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; } /* เรียงแนวตั้งในมือถือ */
+            .btn-group { flex-direction: column; } /* ปุ่มเรียงลงมา */
+            .glass-panel { padding: 20px; border-radius: 16px; }
+            .logo-text { font-size: 1.8rem; }
+            .ci-value { font-size: 1.8rem; }
+            .btn { width: 100%; padding: 14px; }
+        }
+
         @media print {
             body { background: white; padding: 0; }
             .no-print { display: none !important; }
-            .glass-panel { box-shadow: none; border: none; padding: 0; margin-bottom: 20px; backdrop-filter: none; background: white; }
-            .btn-group { display: none; }
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3 { grid-template-columns: 1fr; }
-            .btn-group { flex-direction: column; }
+            .glass-panel { box-shadow: none; border: none; padding: 0; background: white; }
+            .table-container { overflow-x: visible; }
         }
     </style>
 </head>
@@ -239,7 +251,7 @@
         </div>
 
         <div class="input-group">
-            <label>ผู้ร่วมวิจัย (พิมพ์ชื่อแล้วกด Enter)</label>
+            <label>ผู้ร่วมวิจัย (พิมพ์ชื่อแล้วกด Enter หรือปุ่ม +)</label>
             <div style="display:flex; gap:10px;">
                 <input type="text" id="coInput" onkeypress="handleCoKey(event)" placeholder="เพิ่มชื่อผู้ร่วมวิจัย...">
                 <button type="button" onclick="addCoResearcher()" style="width:50px; border-radius:10px; border:none; background:#edf2f7; cursor:pointer;"><i class="ph ph-plus-bold"></i></button>
@@ -247,13 +259,13 @@
             <div class="tag-area" id="coContainer"></div>
         </div>
 
-        <div style="height:1px; background:rgba(0,0,0,0.05); margin: 30px 0;"></div>
+        <div style="height:1px; background:rgba(0,0,0,0.05); margin: 25px 0;"></div>
 
         <div class="section-title"><i class="ph ph-sliders-horizontal"></i> ข้อมูลทางสถิติ</div>
         
         <div class="grid-2">
-            <div style="background:rgba(255,255,255,0.4); padding:20px; border-radius:16px;">
-                <strong style="color:var(--accent); display:block; margin-bottom:15px;">🧪 กลุ่มทดลอง (Experimental)</strong>
+            <div style="background:rgba(255,255,255,0.4); padding:15px; border-radius:16px;">
+                <strong style="color:var(--accent); display:block; margin-bottom:10px;">🧪 กลุ่มทดลอง (Exp)</strong>
                 <div class="grid-3">
                     <div><label>Mean</label><input type="number" step="any" id="m1" value="0"></div>
                     <div><label>SD</label><input type="number" step="any" id="sd1" value="0"></div>
@@ -261,8 +273,8 @@
                 </div>
             </div>
 
-            <div style="background:rgba(255,255,255,0.4); padding:20px; border-radius:16px;">
-                <strong style="color:#718096; display:block; margin-bottom:15px;">🛡️ กลุ่มควบคุม (Control)</strong>
+            <div style="background:rgba(255,255,255,0.4); padding:15px; border-radius:16px;">
+                <strong style="color:#718096; display:block; margin-bottom:10px;">🛡️ กลุ่มควบคุม (Control)</strong>
                 <div class="grid-3">
                     <div><label>Mean</label><input type="number" step="any" id="m2" value="0"></div>
                     <div><label>SD</label><input type="number" step="any" id="sd2" value="0"></div>
@@ -272,35 +284,35 @@
         </div>
 
         <div id="resultBox" class="result-wrapper">
-            <div style="font-size:0.9rem; color:#718096; letter-spacing:1px; text-transform:uppercase;">95% Confidence Interval</div>
+            <div style="font-size:0.85rem; color:#718096; letter-spacing:1px; text-transform:uppercase;">95% Confidence Interval</div>
             <div class="ci-value" id="ciText">--</div>
-            <div id="interpretText" style="font-weight:500;"></div>
+            <div id="interpretText" style="font-weight:500; font-size:0.95rem;"></div>
         </div>
 
         <div class="btn-group">
             <button class="btn btn-ghost" onclick="resetForm()"><i class="ph ph-eraser"></i> ล้างค่า</button>
-            <button class="btn btn-primary" onclick="calculatePreview()"><i class="ph ph-calculator"></i> คำนวณผลลัพธ์</button>
-            <button class="btn btn-success" onclick="saveData()"><i class="ph ph-floppy-disk"></i> บันทึกข้อมูล</button>
+            <button class="btn btn-primary" onclick="calculatePreview()"><i class="ph ph-calculator"></i> คำนวณ</button>
+            <button class="btn btn-success" onclick="saveData()"><i class="ph ph-floppy-disk"></i> บันทึก</button>
         </div>
     </div>
 
     <div class="glass-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <div class="section-title" style="margin:0;"><i class="ph ph-database"></i> ประวัติการคำนวณ</div>
-            <button onclick="window.print()" class="btn btn-ghost no-print" style="padding:8px 15px; font-size:0.9rem;">
-                <i class="ph ph-printer"></i> Print PDF
+            <button onclick="window.print()" class="btn btn-ghost no-print" style="padding:6px 12px; font-size:0.85rem;">
+                <i class="ph ph-printer"></i> PDF
             </button>
         </div>
         
-        <div style="overflow-x:auto;">
+        <div class="table-container">
             <table class="modern-table">
                 <thead>
                     <tr>
-                        <th width="30%">โครงการวิจัย</th>
-                        <th width="25%">กลุ่มตัวอย่าง</th>
-                        <th width="25%">ผล 95% CI</th>
-                        <th width="10%">แปลผล</th>
-                        <th width="10%" class="no-print" style="text-align:right;">จัดการ</th>
+                        <th>โครงการวิจัย</th>
+                        <th>กลุ่มตัวอย่าง</th>
+                        <th>ผล 95% CI</th>
+                        <th>แปลผล</th>
+                        <th class="no-print" style="text-align:right;">จัดการ</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -309,34 +321,31 @@
         </div>
     </div>
 
-    <div class="glass-panel knowledge-box">
+    <div class="glass-panel" style="font-size:0.9rem; line-height:1.6; color:#4a5568;">
         <div class="section-title"><i class="ph ph-graduation-cap"></i> สรุปสูตรและที่มา (Methodology)</div>
         
-        <p>การวิเคราะห์ความแตกต่างของค่าเฉลี่ย 2 กลุ่มอิสระ (Independent Samples) โดยใช้สถิติ 95% Confidence Interval</p>
+        <p>การวิเคราะห์ความแตกต่างของค่าเฉลี่ย 2 กลุ่มอิสระ (Independent Samples)</p>
 
-        <div style="margin-top:20px;"><strong>1. สูตรคำนวณ Standard Error (SE)</strong></div>
+        <div style="margin-top:15px;"><strong>1. สูตรคำนวณ Standard Error (SE)</strong></div>
         <div class="formula">
             $$ SE_{\bar{X}_1-\bar{X}_2} = \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
         </div>
-        <div class="quote">
-            "ส่วนคลาดเคลื่อนมาตรฐานของผลต่างค่าเฉลี่ย (Standard Error of Mean Difference) คำนวณจากส่วนเบี่ยงเบนมาตรฐานและขนาดตัวอย่างของทั้งสองกลุ่ม ตามสูตร..."
-        </div>
-
-        <div style="margin-top:20px;"><strong>2. ที่มาของค่า Z = 1.96</strong></div>
+        
+        <div style="margin-top:15px;"><strong>2. ที่มาของค่า Z = 1.96</strong></div>
         <p>ที่ระดับความเชื่อมั่น 95% ($\alpha = 0.05$) บนการแจกแจงปกติมาตรฐาน พื้นที่ใต้กราฟตรงกลาง 95% จะถูกล้อมรอบด้วยค่า Z-score ที่ $\pm 1.96$</p>
+
+        <div style="margin-top:15px;"><strong>3. สูตร 95% CI ฉบับสมบูรณ์</strong></div>
+        <div class="formula">
+            $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+        </div>
         
         <div class="quote">
             "การคำนวณช่วงความเชื่อมั่นร้อยละ 95 ใช้ค่าคงที่ Z เท่ากับ 1.96 ซึ่งได้จากการแจกแจงปกติมาตรฐาน โดยครอบคลุมพื้นที่ใต้โค้งปกติร้อยละ 95"
         </div>
-
-        <div style="margin-top:20px;"><strong>3. สูตร 95% CI ฉบับสมบูรณ์</strong></div>
-        <div class="formula">
-            $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
-        </div>
     </div>
 
-    <footer style="text-align:center; color:#a0aec0; font-size:0.85rem; margin-top:40px;">
-        Designed by RN. Witsanukorn Oya © 2026 | Future Research Tool
+    <footer style="text-align:center; color:#a0aec0; font-size:0.8rem; margin-top:30px; margin-bottom:10px;">
+        Designed by RN. Witsanukorn Oya © 2026
     </footer>
 </div>
 
@@ -451,7 +460,7 @@
                     <div style="font-size:0.85rem; color:#718096;">${item.pi}</div>
                     ${coTxt}
                 </td>
-                <td style="font-size:0.9rem;">
+                <td style="font-size:0.85rem;">
                    <span style="color:var(--accent)">n=${item.stats.n1}</span> vs <span style="color:#718096">n=${item.stats.n2}</span>
                 </td>
                 <td style="font-family:'Prompt'; font-weight:600; color:#2d3748;">
