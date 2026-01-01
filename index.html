@@ -204,14 +204,15 @@
         @media print {
             @page {
                 size: A4;
-                margin: 2cm 2cm;
+                margin: 1.5cm 1.5cm;
             }
             
+            /* ปรับปรุงหลักเพื่อป้องกันหน้าแรกล้น */
             body {
                 background: white !important;
                 font-family: 'Sarabun', sans-serif !important;
-                font-size: 12pt !important;
-                line-height: 1.5 !important;
+                font-size: 11pt !important; /* ลดขนาดฟอนต์จาก 12pt */
+                line-height: 1.4 !important; /* ลดระยะห่างบรรทัด */
                 color: #000 !important;
                 padding: 0 !important;
                 margin: 0 !important;
@@ -220,6 +221,7 @@
                 overflow: visible !important;
             }
             
+            /* ซ่อนองค์ประกอบที่ไม่จำเป็นสำหรับการพิมพ์ */
             .screen-only,
             header,
             .btn-group,
@@ -285,51 +287,56 @@
                 position: static !important;
                 width: 100% !important;
                 height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
             }
             
+            /* ปรับปรุง header หน้าแรกให้กะทัดรัด */
             .print-header {
                 display: block !important;
                 text-align: center;
-                margin-bottom: 30px;
-                padding-bottom: 20px;
-                border-bottom: 3px double #000;
+                margin-bottom: 15px !important; /* ลด margin จาก 30px */
+                padding-bottom: 10px !important; /* ลด padding จาก 20px */
+                border-bottom: 2px solid #000 !important; /* ลดจาก 3px */
             }
             
             .print-header h1 {
                 font-family: 'Prompt', sans-serif !important;
-                font-size: 24pt !important;
+                font-size: 20pt !important; /* ลดจาก 24pt */
                 color: #000 !important;
-                margin-bottom: 8px;
+                margin-bottom: 5px !important; /* ลดจาก 8px */
                 font-weight: bold !important;
             }
             
             .print-header .subtitle {
                 display: block !important;
-                font-size: 14pt !important;
+                font-size: 12pt !important; /* ลดจาก 14pt */
                 color: #666 !important;
                 font-family: 'Prompt', sans-serif !important;
                 font-weight: 500 !important;
             }
             
+            /* ปรับปรุง meta info ให้กะทัดรัด */
             .print-meta {
                 display: flex !important;
                 justify-content: space-between;
-                font-size: 11pt !important;
+                font-size: 10pt !important; /* ลดจาก 11pt */
                 color: #666 !important;
-                margin-bottom: 25px !important;
-                padding-bottom: 15px !important;
+                margin-bottom: 15px !important; /* ลดจาก 25px */
+                padding-bottom: 10px !important; /* ลดจาก 15px */
                 border-bottom: 1px solid #ddd !important;
             }
             
+            /* ปรับปรุง title ให้กะทัดรัด */
             .print-report-title {
                 display: block !important;
                 text-align: center;
                 font-family: 'Prompt', sans-serif !important;
-                font-size: 18pt !important;
-                margin: 25px 0 !important;
-                padding: 15px !important;
+                font-size: 16pt !important; /* ลดจาก 18pt */
+                margin: 15px 0 !important; /* ลดจาก 25px */
+                padding: 12px !important; /* ลดจาก 15px */
                 background: #f5f5f5 !important;
-                border: 2px solid #000 !important;
+                border: 1px solid #000 !important; /* ลดจาก 2px */
                 font-weight: bold !important;
             }
             
@@ -341,110 +348,148 @@
                 display: block !important;
             }
             
+            /* ปรับปรุง card ให้กะทัดรัด */
             .card {
                 display: block !important;
                 box-shadow: none !important;
-                border: 2px solid #000 !important;
+                border: 1px solid #000 !important; /* ลดจาก 2px */
                 border-radius: 0 !important;
-                padding: 25px !important;
-                margin: 0 0 25px 0 !important;
+                padding: 20px !important; /* ลดจาก 25px */
+                margin: 0 0 20px 0 !important; /* ลดจาก 25px */
                 background: white !important;
+                page-break-inside: avoid !important;
             }
 
             .section-title {
                 display: block !important;
                 font-family: 'Prompt', sans-serif !important;
-                font-size: 14pt !important;
+                font-size: 12pt !important; /* ลดจาก 14pt */
                 color: #000 !important;
-                border-bottom: 2px solid #000 !important;
-                padding-bottom: 8px !important;
-                margin-bottom: 20px !important;
+                border-bottom: 1px solid #000 !important; /* ลดจาก 2px */
+                padding-bottom: 6px !important; /* ลดจาก 8px */
+                margin-bottom: 15px !important; /* ลดจาก 20px */
                 font-weight: 600 !important;
             }
 
+            /* ปรับปรุง project info ให้กะทัดรัด */
+            .project-info-print {
+                display: block !important;
+                margin-bottom: 15px !important; /* ลดจาก 25px */
+                padding-bottom: 10px !important; /* ลดจาก 15px */
+                border-bottom: 1px solid #ddd !important;
+            }
+            .project-info-print p {
+                display: block !important;
+                margin: 4px 0 !important; /* ลดจาก 5px */
+                font-size: 11pt !important; /* ลดจาก 12pt */
+                line-height: 1.5 !important; /* ลดจาก 1.6 */
+            }
+
+            /* ปรับปรุง conclusion section ให้กะทัดรัด */
+            .conclusion-section {
+                display: block !important;
+                margin-top: 5px !important; /* ลดจาก 10px */
+                padding: 15px !important; /* ลดจาก 20px */
+                border: 1px solid #000 !important; /* ลดจาก 2px */
+                background: #f9f9f9 !important;
+            }
+            
+            .conclusion-section h3 {
+                font-size: 13pt !important;
+                margin-bottom: 10px !important;
+            }
+            
+            .conclusion-text {
+                display: block !important;
+                font-size: 11pt !important; /* ลดจาก 12pt */
+                line-height: 1.5 !important; /* ลดจาก 1.6 */
+                margin-bottom: 15px !important; /* ลดจาก 20px */
+            }
+            
+            /* ปรับปรุง signature ให้กะทัดรัด */
+            .signature-section {
+                display: block !important;
+                margin-top: 20px !important; /* ลดจาก 40px */
+                text-align: center !important;
+            }
+            .signature-line {
+                display: inline-block !important;
+                width: 250px !important; /* ลดจาก 300px */
+                border-top: 1px solid #000 !important;
+                margin-top: 20px !important; /* ลดจาก 40px */
+                padding-top: 8px !important; /* ลดจาก 10px */
+                font-size: 11pt !important; /* ลดจาก 12pt */
+            }
+
+            /* ปรับปรุงตารางให้กะทัดรัด */
             .results-table,
             .print-table {
                 width: 100% !important;
                 border-collapse: collapse !important;
-                margin: 20px 0 !important;
-                font-size: 11pt !important;
-                border: 2px solid #000 !important;
+                margin: 15px 0 !important; /* ลดจาก 20px */
+                font-size: 10pt !important; /* ลดจาก 11pt */
+                border: 1px solid #000 !important; /* ลดจาก 2px */
                 display: table !important;
             }
             .results-table th,
             .print-table th {
                 background: #e0e0e0 !important;
                 font-weight: bold !important;
-                padding: 12px 8px !important;
+                padding: 8px 6px !important; /* ลดจาก 12px 8px */
                 border: 1px solid #000 !important;
                 text-align: center !important;
                 font-family: 'Prompt', sans-serif !important;
             }
             .results-table td,
             .print-table td {
-                padding: 10px 8px !important;
+                padding: 6px 5px !important; /* ลดจาก 10px 8px */
                 border: 1px solid #000 !important;
                 text-align: center !important;
             }
 
-            .project-info-print {
-                display: block !important;
-                margin-bottom: 25px !important;
-                padding-bottom: 15px !important;
-                border-bottom: 1px solid #ddd !important;
-            }
-            .project-info-print p {
-                display: block !important;
-                margin: 5px 0 !important;
-                font-size: 12pt !important;
-                line-height: 1.6 !important;
-            }
-
+            /* ปรับปรุง test data ให้กะทัดรัด */
             .test-data-print {
                 display: block !important;
                 background: #f9f9f9 !important;
-                padding: 20px !important;
-                margin: 20px 0 !important;
+                padding: 15px !important; /* ลดจาก 20px */
+                margin: 15px 0 !important; /* ลดจาก 20px */
                 border: 1px solid #ddd !important;
             }
 
-            .conclusion-section {
-                display: block !important;
-                margin-top: 10px !important;
-                padding: 20px !important;
-                border: 2px solid #000 !important;
-                background: #f9f9f9 !important;
-            }
-            .conclusion-text {
-                display: block !important;
-                font-size: 12pt !important;
-                line-height: 1.6 !important;
-                margin-bottom: 20px !important;
-            }
-            .signature-section {
-                display: block !important;
-                margin-top: 40px !important;
-                text-align: center !important;
-            }
-            .signature-line {
-                display: inline-block !important;
-                width: 300px !important;
-                border-top: 1px solid #000 !important;
-                margin-top: 40px !important;
-                padding-top: 10px !important;
-                font-size: 12pt !important;
+            /* ปรับปรุง analysis box ให้กะทัดรัด */
+            .analysis-box {
+                background: #fff !important;
+                border: 1px solid #e2e8f0 !important;
+                border-left: 3px solid var(--primary) !important; /* ลดจาก 5px */
+                padding: 15px !important; /* ลดจาก 20px */
+                border-radius: 8px !important;
+                margin-top: 15px !important; /* ลดจาก 20px */
             }
 
+            /* ปรับปรุง page footer ให้กะทัดรัด */
             .page-footer {
                 display: block !important;
                 text-align: center !important;
-                font-size: 10pt !important;
+                font-size: 9pt !important; /* ลดจาก 10pt */
                 color: #666 !important;
-                margin-top: 30px !important;
-                padding-top: 15px !important;
+                margin-top: 15px !important; /* ลดจาก 30px */
+                padding-top: 10px !important; /* ลดจาก 15px */
                 border-top: 1px solid #ddd !important;
             }
 
+            /* บังคับแบ่งหน้าหลังจากหน้าแรก */
+            .card:first-of-type {
+                page-break-after: always !important;
+                margin-bottom: 0 !important;
+            }
+
+            /* เพิ่มการควบคุมการแบ่งหน้า */
+            .card {
+                page-break-inside: avoid !important;
+                page-break-before: auto !important;
+            }
+
+            /* ปรับปรุงสีสำหรับการพิมพ์ */
             * {
                 -webkit-print-color-adjust: exact !important;
                 color-adjust: exact !important;
@@ -1489,6 +1534,144 @@
         }, 100);
     }
 
+    function printHistoryItem(id) {
+        const item = researchData.find(item => item.id === id);
+        if (!item) return;
+        
+        // เตรียมข้อมูลสำหรับพิมพ์จากประวัติ
+        lastCalculation = item.calculation;
+        currentTestType = item.testType;
+        coResearchers = [...item.coResearchers];
+        
+        // เตรียมข้อมูลสำหรับพิมพ์
+        const now = new Date();
+        document.getElementById('printDate').textContent = item.timestamp;
+        document.getElementById('printUser').textContent = item.piName;
+        document.getElementById('printPI').textContent = item.piName;
+        document.getElementById('printTitle').textContent = item.titleName;
+        document.getElementById('printCoResearchers').textContent = item.coResearchers.join(', ') || '-';
+        document.getElementById('printTestType').textContent = getTestTypeName(item.testType);
+        document.getElementById('printAnalysisDate').textContent = item.timestamp;
+
+        // เตรียม test data
+        let testDataHTML = '';
+        const d = item.calculation.data;
+        if (d && item.testType === 'two-sample') {
+            testDataHTML = `
+                <table class="print-table">
+                    <thead>
+                        <tr>
+                            <th>กลุ่ม</th><th>Mean</th><th>SD</th><th>n</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Experimental</td><td>${d.m1}</td><td>${d.sd1}</td><td>${d.n1}</td></tr>
+                        <tr><td>Control</td><td>${d.m2}</td><td>${d.sd2}</td><td>${d.n2}</td></tr>
+                    </tbody>
+                </table>`;
+        } else if (d && item.testType === 'one-sample') {
+            testDataHTML = `
+                <table class="print-table">
+                    <thead>
+                        <tr>
+                            <th>กลุ่ม</th><th>Mean</th><th>SD</th><th>n</th><th>μ₀</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Sample</td><td>${d.m}</td><td>${d.sd}</td><td>${d.n}</td><td>${d.mu0}</td></tr>
+                    </tbody>
+                </table>`;
+        } else if (d && item.testType === 'proportion') {
+            testDataHTML = `
+                <table class="print-table">
+                    <thead>
+                        <tr>
+                            <th>กลุ่ม</th><th>Events (x)</th><th>Total (n)</th><th>Proportion (p)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>${d.x1}</td><td>${d.n1}</td><td>${d.p1 ? d.p1.toFixed(3) : (d.x1/d.n1).toFixed(3)}</td></tr>
+                        <tr><td>2</td><td>${d.x2}</td><td>${d.n2}</td><td>${d.p2 ? d.p2.toFixed(3) : (d.x2/d.n2).toFixed(3)}</td></tr>
+                    </tbody>
+                </table>`;
+        }
+        document.getElementById('testDataPrint').innerHTML = testDataHTML;
+
+        // เตรียมผลลัพธ์
+        const ciLevel = Math.round(item.confidenceLevel * 100);
+        const alpha = 1 - item.confidenceLevel;
+        const res = item.calculation;
+        if (res) {
+            const sig = res.p < alpha;
+            document.getElementById('printTestName').textContent = getTestTypeName(item.testType);
+            document.getElementById('printTestStat').textContent = res.stat.toFixed(3);
+            document.getElementById('printDf').textContent = res.df ? res.df.toFixed(2) : '--';
+            document.getElementById('printPValue').textContent = res.p < 0.001 ? '< .001' : res.p.toFixed(3);
+            document.getElementById('printEffectSize').textContent = res.d ? Math.abs(res.d).toFixed(2) : '--';
+            document.getElementById('printCi').textContent = `[${res.lower.toFixed(2)}, ${res.upper.toFixed(2)}]`;
+            document.getElementById('printCiHeader').textContent = `${ciLevel}% CI`;
+
+            const printHypoBadge = document.getElementById('printHypoBadge');
+            printHypoBadge.innerText = sig ? 'Reject H₀ / Accept H₁' : 'Accept H₀';
+            printHypoBadge.className = sig ? 'h-badge h-reject' : 'h-badge h-accept';
+
+            let es = Math.abs(res.d || 0), interp = "Negligible";
+            if (es >= 0.2) interp = "Small";
+            if (es >= 0.5) interp = "Medium";
+            if (es >= 0.8) interp = "Large";
+            document.getElementById('printEsValBox').innerText = es.toFixed(2);
+            document.getElementById('printEsInterpBox').innerText = interp;
+            document.getElementById('printThesisText').innerText =
+                `ผลการทดสอบ ${sig ? 'มี' : 'ไม่พบ'}ความแตกต่างอย่างมีนัยสำคัญที่ระดับ ${ciLevel}% (p = ${res.p.toFixed(3)}, α = ${alpha.toFixed(3)})`;
+
+            const methodText = item.method === 'z' ? 'Z-Distribution'
+                : item.method === 't' ? 'T-Distribution' : 'Auto-Selected';
+
+            const settingsTable = document.getElementById('printSettingsTable');
+            settingsTable.innerHTML = `
+                <tr>
+                    <td>ระดับความเชื่อมั่น</td>
+                    <td>${ciLevel}%</td>
+                    <td>ค่า Alpha = ${alpha.toFixed(3)}</td>
+                </tr>
+                <tr>
+                    <td>วิธีการคำนวณ</td>
+                    <td>${methodText}</td>
+                    <td>${item.method === 'auto' ? 'เลือกวิธีโดยอัตโนมัติ' : 'เลือกวิธีด้วยตนเอง'}</td>
+                </tr>
+                <tr>
+                    <td>Critical Value</td>
+                    <td>${res.crit.toFixed(3)}</td>
+                    <td>ใช้สำหรับคำนวณช่วงความเชื่อมั่น</td>
+                </tr>`;
+        }
+
+        // สรุปผล
+        const sig = item.calculation.p < (1 - item.confidenceLevel);
+        const testName = getTestTypeName(item.testType);
+        let conclusion = `จากการวิเคราะห์ด้วย ${testName} `;
+        if (sig) {
+            conclusion += `พบว่ามีความแตกต่างอย่างมีนัยสำคัญทางสถิติที่ระดับ ${ciLevel}% (p = ${item.calculation.p < 0.001 ? '< .001' : item.calculation.p.toFixed(3)}). `;
+        } else {
+            conclusion += `ไม่พบความแตกต่างอย่างมีนัยสำคัญทางสถิติที่ระดับ ${ciLevel}% (p = ${item.calculation.p.toFixed(3)}). `;
+        }
+        conclusion += `ช่วงความเชื่อมั่น ${ciLevel}% อยู่ที่ [${item.calculation.lower.toFixed(2)}, ${item.calculation.upper.toFixed(2)}]. `;
+        if (item.calculation.d) {
+            const es = Math.abs(item.calculation.d);
+            let esLevel = "ต่ำมาก";
+            if(es >= 0.2) esLevel = "ต่ำ";
+            if(es >= 0.5) esLevel = "ปานกลาง";
+            if(es >= 0.8) esLevel = "สูง";
+            conclusion += `ขนาดอิทธิพล (Cohen's d) เท่ากับ ${es.toFixed(2)} ซึ่งจัดอยู่ในระดับ ${esLevel}.`;
+        }
+        document.getElementById('printConclusionText').textContent = conclusion;
+
+        // พิมพ์
+        setTimeout(() => {
+            window.print();
+        }, 100);
+    }
+
     function preparePrintData() {
         const now = new Date();
         document.getElementById('printDate').textContent = now.toLocaleDateString('th-TH', {
@@ -1603,6 +1786,37 @@
 
         const conclusionText = generateConclusionText();
         document.getElementById('printConclusionText').textContent = conclusionText;
+    }
+
+    function showMethodInfo() {
+        const content = `
+            <h3>Critical Value Method Selection</h3>
+            <p><strong>Auto-Select:</strong> ระบบจะเลือกวิธีที่เหมาะสมให้อัตโนมัติตามขนาดตัวอย่าง</p>
+            <ul>
+                <li>n ≥ 30: ใช้ Z-Distribution (Normal)</li>
+                <li>n &lt; 30: ใช้ T-Distribution</li>
+            </ul>
+            <p><strong>Z-Distribution:</strong> เหมาะสำหรับกลุ่มตัวอย่างใหญ่ (n ≥ 30) หรือเมื่อทราบความแปรปรวนของประชากร</p>
+            <p><strong>T-Distribution:</strong> เหมาะสำหรับกลุ่มตัวอย่างเล็ก (n &lt; 30) หรือเมื่อไม่ทราบความแปรปรวนของประชากร</p>
+        `;
+        document.getElementById('methodInfoContent').innerHTML = content;
+        document.getElementById('methodInfoModal').style.display = 'block';
+    }
+
+    function showTooltip(type) {
+        let message = '';
+        switch(type) {
+            case 'auto':
+                message = 'ระบบจะเลือกวิธีที่เหมาะสมให้อัตโนมัติ (n ≥ 30: Z, n < 30: T)';
+                break;
+            case 'z':
+                message = 'ใช้ Z-Distribution (Normal) เหมาะสำหรับกลุ่มตัวอย่างใหญ่ (n ≥ 30)';
+                break;
+            case 't':
+                message = 'ใช้ T-Distribution เหมาะสำหรับกลุ่มตัวอย่างเล็ก (n < 30)';
+                break;
+        }
+        alert(message);
     }
 
     window.onload = function() {
