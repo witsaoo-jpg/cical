@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Futuristic CI Calculator & Report Generator</title>
+    <title>Advanced Research Calculator (CI & Effect Size)</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
@@ -20,8 +20,10 @@
             --glass-border: 1px solid rgba(255, 255, 255, 0.6);
             --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
             --text-main: #2d3748;
-            --text-light: #718096;
+            --text-light: #4a5568;
             --accent: #667eea;
+            --success: #10b981;
+            --warning: #f59e0b;
         }
 
         *, *::before, *::after { box-sizing: border-box; }
@@ -37,11 +39,10 @@
 
         .container { max-width: 950px; margin: 0 auto; width: 100%; }
 
-        /* --- UI Elements (Screen Only) --- */
+        /* --- Screen Styles --- */
         .screen-only { display: block; }
         .print-only { display: none; }
 
-        /* --- Header --- */
         header { text-align: center; margin-bottom: 30px; }
         .logo-text {
             font-family: 'Prompt', sans-serif; font-size: 2.2rem; font-weight: 600;
@@ -52,11 +53,9 @@
         .sub-header {
             font-family: 'Prompt'; color: var(--text-light);
             background: rgba(255,255,255,0.6); display: inline-block;
-            padding: 5px 15px; border-radius: 20px; margin-top: 10px;
-            font-size: 0.9rem;
+            padding: 5px 15px; border-radius: 20px; margin-top: 10px; font-size: 0.9rem;
         }
 
-        /* --- Glass Panel --- */
         .glass-panel {
             background: var(--glass-bg); box-shadow: var(--shadow-soft);
             backdrop-filter: blur(12px); border-radius: 20px;
@@ -64,11 +63,11 @@
         }
 
         .section-title {
-            font-family: 'Prompt'; font-size: 1.1rem; color: var(--accent);
+            font-family: 'Prompt'; font-size: 1.15rem; color: var(--accent);
             margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2); padding-bottom: 10px;
         }
 
-        /* --- Inputs --- */
         .input-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 6px; font-weight: 500; color: #4a5568; font-size: 0.9rem; }
         input {
@@ -80,7 +79,6 @@
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-        /* --- Tags --- */
         .tag-area { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .tag {
             background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
@@ -88,7 +86,6 @@
             font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
         }
 
-        /* --- Result Section --- */
         .result-wrapper {
             background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
             border-radius: 16px; padding: 25px; text-align: center;
@@ -98,8 +95,21 @@
             font-family: 'Prompt'; font-size: 2.2rem; font-weight: 700;
             background: linear-gradient(90deg, #667eea, #764ba2);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin: 15px 0; word-wrap: break-word;
+            margin: 10px 0; word-wrap: break-word;
         }
+
+        /* Stats Cards (t-test & effect size) */
+        .stats-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;
+            text-align: left;
+        }
+        .stat-card {
+            background: #fff; border-radius: 12px; padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+        }
+        .stat-label { font-size: 0.85rem; color: #718096; font-weight: 600; text-transform: uppercase; }
+        .stat-value { font-size: 1.4rem; font-weight: bold; color: #2d3748; font-family: 'Prompt'; margin: 5px 0; }
+        .stat-desc { font-size: 0.85rem; color: var(--success); font-weight: 500; }
 
         .btn-group { display: flex; gap: 10px; margin-top: 25px; }
         .btn {
@@ -112,7 +122,6 @@
         .btn-success { background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; }
         .btn-ghost { background: white; border: 1px solid #cbd5e0; color: #718096; }
 
-        /* --- Table --- */
         .table-container { overflow-x: auto; width: 100%; }
         .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; min-width: 600px; }
         .modern-table th, .modern-table td { padding: 12px 15px; white-space: nowrap; text-align: left;}
@@ -120,57 +129,69 @@
         .modern-table tr td:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
         .modern-table tr td:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
 
+        /* --- Educational Styles --- */
+        .academic-section { font-size: 0.95rem; line-height: 1.8; color: #2d3748; }
+        .academic-topic { margin-top: 30px; margin-bottom: 15px; }
+        .academic-topic h3 { font-family: 'Prompt'; color: var(--accent); margin-bottom: 10px; font-size: 1.1rem; }
+        .formula-display {
+            background: #fff; border: 1px dashed #cbd5e0; border-radius: 10px;
+            padding: 15px; text-align: center; margin: 15px 0; overflow-x: auto;
+        }
+        .thesis-box {
+            background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 15px;
+            border-radius: 0 8px 8px 0; margin: 15px 0; font-style: italic; color: #0369a1;
+        }
+
+
         /* =========================================
-           PRINT STYLES (สำหรับ A4 Formal Report)
+           PRINT STYLES (A4 Optimized)
            ========================================= */
         @media print {
+            @page { size: A4; margin: 1.5cm; }
             body { 
                 background: white; padding: 0; margin: 0; 
-                font-size: 12pt; color: black;
+                font-size: 11pt; color: black; font-family: 'Sarabun', sans-serif;
             }
             .container { max-width: 100%; width: 100%; }
-            
-            /* ซ่อน UI หน้าจอปกติ */
             .screen-only, .glass-panel, header, .btn-group { display: none !important; }
-            
-            /* แสดงส่วนรายงาน */
             .print-only { display: block !important; }
 
-            /* จัดรูปแบบรายงาน */
-            #printArea {
-                padding: 40px 50px;
-                line-height: 1.6;
-            }
-            #printHeader {
-                text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 20px;
-            }
-            #printHeader h1 { font-family: 'Prompt'; font-size: 18pt; margin: 0; }
-            #printHeader p { margin: 5px 0 0 0; color: #333; }
+            /* Report Header */
+            #printHeader { text-align: center; margin-bottom: 15px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+            #printHeader h1 { font-family: 'Prompt'; font-size: 16pt; margin: 0; color: #000; }
+            #printHeader p { margin: 5px 0 0 0; color: #444; font-size: 10pt; }
             
-            .report-section { margin-bottom: 25px; }
-            .report-label { font-weight: bold; font-family: 'Sarabun'; font-size: 14pt; margin-bottom: 10px; border-left: 5px solid #667eea; padding-left: 10px; }
-            
-            .info-grid { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 8px; }
-            .info-label { font-weight: bold; }
-            
-            .stat-table-print {
-                width: 100%; border-collapse: collapse; margin: 15px 0;
+            /* Sections */
+            .report-section { margin-bottom: 15px; }
+            .report-label { 
+                font-weight: bold; font-family: 'Sarabun'; font-size: 12pt; 
+                margin-bottom: 5px; border-bottom: 1px solid #ccc; display: inline-block; width: 100%; color: #000;
             }
-            .stat-table-print th, .stat-table-print td {
-                border: 1px solid #000; padding: 10px; text-align: center;
-            }
-            .stat-table-print th { background-color: #f0f0f0; }
+            
+            .info-grid { display: grid; grid-template-columns: 140px 1fr; margin-bottom: 4px; font-size: 11pt; }
+            
+            /* Table */
+            .stat-table-print { width: 100%; border-collapse: collapse; margin: 5px 0 10px 0; font-size: 11pt; }
+            .stat-table-print th, .stat-table-print td { border: 1px solid #000; padding: 5px 8px; text-align: center; }
+            .stat-table-print th { background-color: #f0f0f0; font-weight: bold; }
 
-            /* กล่องสูตรใน Print */
-            .formula-print-box {
-                border: 1px dashed #666; padding: 15px; 
-                margin: 15px 0; text-align: center;
+            .formula-print-box { border: 1px solid #ccc; padding: 8px; margin: 8px 0; text-align: center; background: #fdfdfd; font-size: 10pt;}
+
+            .signature-area { margin-top: 30px; display: flex; justify-content: space-between; page-break-inside: avoid; }
+            .sig-box { text-align: center; width: 45%; }
+            
+            .conclusion-box { background: #f9f9f9; padding: 8px; border: 1px solid #ddd; line-height: 1.5; text-align: justify; font-size: 11pt; }
+            
+            .credit-footer {
+                margin-top: 20px; border-top: 1px solid #ccc; font-size: 9pt; 
+                color: #555; text-align: right; padding-top: 5px; font-style: italic;
             }
         }
 
         @media (max-width: 768px) {
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
             .btn-group { flex-direction: column; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -180,7 +201,7 @@
     
     <header class="screen-only">
         <h1 class="logo-text">Research CI Calc</h1>
-        <div class="sub-header">Professional Tool for Nursing Research</div>
+        <div class="sub-header">Advance Tool by พว.วิษณุกรณ์ โอยา</div>
     </header>
 
     <div class="glass-panel screen-only">
@@ -199,9 +220,9 @@
         </div>
 
         <div class="input-group">
-            <label>ผู้ร่วมวิจัย (พิมพ์ชื่อแล้วกด Enter หรือปุ่ม +)</label>
+            <label>ผู้ร่วมวิจัย</label>
             <div style="display:flex; gap:10px;">
-                <input type="text" id="coInput" onkeypress="handleCoKey(event)" placeholder="เพิ่มชื่อผู้ร่วมวิจัย...">
+                <input type="text" id="coInput" onkeypress="handleCoKey(event)" placeholder="พิมพ์ชื่อแล้วกดปุ่ม +">
                 <button type="button" onclick="addCoResearcher()" style="width:50px; border-radius:10px; border:none; background:#edf2f7; cursor:pointer;"><i class="ph ph-plus-bold"></i></button>
             </div>
             <div class="tag-area" id="coContainer"></div>
@@ -233,7 +254,20 @@
         <div id="resultBox" class="result-wrapper">
             <div style="font-size:0.85rem; color:#718096; letter-spacing:1px; text-transform:uppercase;">95% Confidence Interval</div>
             <div class="ci-value" id="ciText">--</div>
-            <div id="interpretText" style="font-weight:500; font-size:1rem;"></div>
+            <div id="interpretText" style="font-weight:500; font-size:1rem; margin-bottom:15px;"></div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">t-statistic</div>
+                    <div class="stat-value" id="tStatVal">--</div>
+                    <div class="stat-desc" style="color:#666;">df = <span id="dfVal">--</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Effect Size (Cohen's d)</div>
+                    <div class="stat-value" id="dStatVal">--</div>
+                    <div class="stat-desc" id="dInterp">--</div>
+                </div>
+            </div>
         </div>
 
         <div class="btn-group">
@@ -245,7 +279,7 @@
 
     <div class="glass-panel screen-only">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <div class="section-title" style="margin:0;"><i class="ph ph-database"></i> ประวัติการคำนวณ</div>
+            <div class="section-title" style="margin:0; border:none;"><i class="ph ph-database"></i> ประวัติการคำนวณ</div>
             <button onclick="window.print()" class="btn btn-ghost" style="padding:6px 12px; font-size:0.85rem;">
                 <i class="ph ph-printer"></i> พิมพ์รายงาน (PDF)
             </button>
@@ -257,6 +291,7 @@
                         <th>โครงการวิจัย</th>
                         <th>กลุ่มตัวอย่าง</th>
                         <th>ผล 95% CI</th>
+                        <th>Effect Size</th>
                         <th>จัดการ</th>
                     </tr>
                 </thead>
@@ -265,18 +300,55 @@
         </div>
     </div>
     
-    <div class="glass-panel screen-only" style="margin-bottom:50px;">
-        <div class="section-title"><i class="ph ph-graduation-cap"></i> ที่มาและสูตร</div>
-        <div style="text-align:center; padding:15px; background:#f8fafc; border-radius:10px; border:1px dashed #ccc;">
-            $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+    <div class="glass-panel screen-only academic-section">
+        <div class="section-title"><i class="ph ph-graduation-cap"></i> สรุปสูตรและที่มาทางสถิติ (Methodology)</div>
+
+        <div class="academic-topic">
+            <h3>1️⃣ สูตรการคำนวณ SE (Standard Error)</h3>
+            <p>กรณีศึกษานี้ใช้การเปรียบเทียบค่าเฉลี่ย 2 กลุ่มอิสระ (Independent samples):</p>
+            <div class="formula-display">
+                $$ SE_{\bar{X}_1-\bar{X}_2} = \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+            </div>
+            <ul style="list-style:none; padding-left:10px; font-size:0.9rem;">
+                <li>$SD$ = ส่วนเบี่ยงเบนมาตรฐาน, $n$ = ขนาดตัวอย่าง</li>
+            </ul>
+            <div class="thesis-box">
+                <b>✍️ ตัวอย่างการเขียนในวิทยานิพนธ์:</b><br>
+                "ส่วนคลาดเคลื่อนมาตรฐานของผลต่างค่าเฉลี่ย คำนวณจากส่วนเบี่ยงเบนมาตรฐานและขนาดตัวอย่างของทั้งสองกลุ่ม ตามสูตร..."
+            </div>
+        </div>
+
+        <div class="academic-topic">
+            <h3>2️⃣ ที่มาของค่า 1.96 (Z = 1.96)</h3>
+            <p>ค่า 1.96 มาจากการแจกแจงปกติมาตรฐาน ที่ระดับความเชื่อมั่น 95% ($\alpha = 0.05$) โดยพื้นที่ใต้กราฟตรงกลาง 95% จะถูกล้อมรอบด้วยค่า Z-score ที่ $\pm 1.96$</p>
+        </div>
+
+        <div class="academic-topic">
+            <h3>3️⃣ Effect Size (Cohen's d)</h3>
+            <p>ค่าขนาดอิทธิพลใช้บอกระดับความรุนแรงของความแตกต่าง (Magnitude of Difference) โดยใช้สูตร:</p>
+            <div class="formula-display">
+                $$ d = \frac{\bar{X}_1 - \bar{X}_2}{SD_{pooled}} $$
+            </div>
+            <p><b>เกณฑ์การแปลผล:</b> 0.2=เล็ก, 0.5=ปานกลาง, 0.8=ใหญ่</p>
+        </div>
+
+        <div class="academic-topic">
+            <h3>4️⃣ สูตร CI รวมทั้งหมด</h3>
+            <div class="formula-display">
+                $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+            </div>
+        </div>
+        
+        <div style="font-size:0.8rem; text-align:center; color:#999; margin-top:30px;">
+            Developed by พว.วิษณุกรณ์ โอยา
         </div>
     </div>
 
 
     <div id="printArea" class="print-only">
         <div id="printHeader">
-            <h1>บันทึกข้อความ / รายงานผลการวิเคราะห์ข้อมูล</h1>
-            <p>Research Statistical Analysis Report</p>
+            <h1>รายงานผลการวิเคราะห์ข้อมูลทางสถิติ</h1>
+            <p>Research Statistical Analysis Report (Independent t-test & CI)</p>
         </div>
 
         <div class="report-section">
@@ -284,29 +356,29 @@
             <div class="info-grid"><span class="info-label">ชื่อเรื่องวิจัย:</span> <span id="pTitle">--</span></div>
             <div class="info-grid"><span class="info-label">ผู้วิจัยหลัก:</span> <span id="pPi">--</span></div>
             <div class="info-grid"><span class="info-label">ผู้ร่วมวิจัย:</span> <span id="pCo">--</span></div>
-            <div class="info-grid"><span class="info-label">วันที่ออกรายงาน:</span> <span id="pDate">--</span></div>
+            <div class="info-grid"><span class="info-label">วันที่วิเคราะห์:</span> <span id="pDate">--</span></div>
         </div>
 
         <div class="report-section">
-            <div class="report-label">2. ข้อมูลสถิติเบื้องต้น (Descriptive Statistics)</div>
+            <div class="report-label">2. ข้อมูลสถิติเชิงพรรณนา (Descriptive Statistics)</div>
             <table class="stat-table-print">
                 <thead>
                     <tr>
-                        <th>กลุ่มตัวอย่าง</th>
-                        <th>จำนวน (n)</th>
-                        <th>ค่าเฉลี่ย (Mean)</th>
-                        <th>ส่วนเบี่ยงเบน (SD)</th>
+                        <th style="width:40%">กลุ่มตัวอย่าง</th>
+                        <th style="width:20%">จำนวน (n)</th>
+                        <th style="width:20%">ค่าเฉลี่ย (Mean)</th>
+                        <th style="width:20%">ส่วนเบี่ยงเบน (SD)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>กลุ่มทดลอง (Experimental)</td>
+                        <td style="text-align:left;">กลุ่มทดลอง (Experimental)</td>
                         <td id="pn1">0</td>
                         <td id="pm1">0</td>
                         <td id="psd1">0</td>
                     </tr>
                     <tr>
-                        <td>กลุ่มควบคุม (Control)</td>
+                        <td style="text-align:left;">กลุ่มควบคุม (Control)</td>
                         <td id="pn2">0</td>
                         <td id="pm2">0</td>
                         <td id="psd2">0</td>
@@ -316,37 +388,64 @@
         </div>
 
         <div class="report-section">
-            <div class="report-label">3. การคำนวณและแทนค่าสูตร (Calculation)</div>
-            <p>วิเคราะห์ความแตกต่างค่าเฉลี่ย 2 กลุ่มอิสระที่ระดับความเชื่อมั่น 95% โดยใช้สูตร:</p>
+            <div class="report-label">3. ผลสถิติอ้างอิงและขนาดอิทธิพล (Inferential Statistics)</div>
+            <table class="stat-table-print">
+                <thead>
+                    <tr>
+                        <th>Mean Diff.</th>
+                        <th>Standard Error</th>
+                        <th>t-statistic</th>
+                        <th>df</th>
+                        <th>Effect Size (d)</th>
+                        <th>95% CI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="pMeanDiff">--</td>
+                        <td id="pSE">--</td>
+                        <td id="pTVal">--</td>
+                        <td id="pDf">--</td>
+                        <td id="pCohen">--</td>
+                        <td id="pCI">--</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="margin-top:10px;"><b>สูตรการคำนวณ:</b></div>
             <div class="formula-print-box">
                  $$ CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
             </div>
-            <p><b>แทนค่าตัวเลขในสูตร (Substitution):</b></p>
+            <div><b>การแทนค่า (Substitution):</b></div>
             <div class="formula-print-box" id="printSubstitutionMath">
                 (กรุณากดปุ่มคำนวณเพื่อแสดงการแทนค่า)
             </div>
         </div>
 
         <div class="report-section">
-            <div class="report-label">4. สรุปผลการวิจัย (Conclusion)</div>
-            <div style="background:#f9f9f9; padding:15px; border:1px solid #ddd; line-height:1.8;">
+            <div class="report-label">4. สรุปและอภิปรายผล (Conclusion)</div>
+            <div class="conclusion-box">
                 <div id="printConclusionText">--</div>
             </div>
         </div>
         
-        <div style="margin-top:50px; display:flex; justify-content:space-between; padding-top:20px;">
-            <div style="text-align:center;">
+        <div class="signature-area">
+            <div class="sig-box">
+                <br><br>
                 ลงชื่อ .......................................................<br>
-                ( ....................................................... )<br>
+                ( <span id="sigName1">........................................</span> )<br>
                 ผู้วิจัยหลัก
             </div>
-            <div style="text-align:center;">
-                 วันที่ ......... / ......... / ............
+            <div class="sig-box">
+                 <br><br>
+                 วันที่ ......... / ......... / ............<br>
+                 <br>
+                 รับรองผลการคำนวณ
             </div>
         </div>
         
-        <div style="margin-top:30px; border-top:1px solid #ccc; font-size:9pt; color:#666; text-align:center; padding-top:10px;">
-            Generated by RN. Witsanukorn Oya Research Tool © 2026
+        <div class="credit-footer">
+            Developed by พว.วิษณุกรณ์ โอยา (Research Tool v2.0)
         </div>
     </div>
 
@@ -382,7 +481,7 @@
         });
     }
 
-    // --- Calculation & Reporting ---
+    // --- Calculation Engine ---
     function calculateStats() {
         const m1 = parseFloat(document.getElementById('m1').value);
         const sd1 = parseFloat(document.getElementById('sd1').value);
@@ -393,14 +492,27 @@
 
         if(n1 <=0 || n2 <=0) return null;
 
+        // Basic CI Stats
         const diff = m1 - m2;
-        const se = Math.sqrt((Math.pow(sd1, 2)/n1) + (Math.pow(sd2, 2)/n2));
+        const var1 = Math.pow(sd1, 2)/n1;
+        const var2 = Math.pow(sd2, 2)/n2;
+        const se = Math.sqrt(var1 + var2);
         const me = 1.96 * se;
         const lower = diff - me;
         const upper = diff + me;
         const isSig = (lower * upper > 0);
 
-        return { diff, lower, upper, isSig, m1, m2, sd1, sd2, n1, n2 };
+        // Advanced Stats (t, df, Cohen's d)
+        // df (Simple approximation)
+        const df = n1 + n2 - 2;
+        // t-value
+        const tVal = diff / se;
+        // Cohen's d (Requires Pooled SD)
+        const pooledVar = ((n1-1)*Math.pow(sd1,2) + (n2-1)*Math.pow(sd2,2)) / (n1+n2-2);
+        const pooledSD = Math.sqrt(pooledVar);
+        const dVal = diff / pooledSD;
+
+        return { diff, lower, upper, isSig, m1, m2, sd1, sd2, n1, n2, se, tVal, df, dVal };
     }
 
     function calculatePreview() {
@@ -415,42 +527,58 @@
             ? `<span style="color:#059669; background:#d1fae5; padding:4px 12px; border-radius:20px;">✨ Significant (แตกต่างกันจริง)</span>`
             : `<span style="color:#718096; background:#edf2f7; padding:4px 12px; border-radius:20px;">Not Significant (ไม่แตกต่าง)</span>`;
 
+        // Update Advanced Stats Cards
+        document.getElementById('tStatVal').innerText = res.tVal.toFixed(2);
+        document.getElementById('dfVal').innerText = res.df;
+        document.getElementById('dStatVal').innerText = Math.abs(res.dVal).toFixed(2);
+        
+        let dInterp = "";
+        let absD = Math.abs(res.dVal);
+        if(absD < 0.2) dInterp = "Negligible (น้อยมาก)";
+        else if(absD < 0.5) dInterp = "Small (เล็ก)";
+        else if(absD < 0.8) dInterp = "Medium (ปานกลาง)";
+        else dInterp = "Large (ใหญ่)";
+        document.getElementById('dInterp').innerText = dInterp;
+
+
         // 2. Prepare Data for PRINT REPORT
         const piName = document.getElementById('piName').value || '-';
         const titleName = document.getElementById('titleName').value || '-';
         const coName = currentCoResearchers.length > 0 ? currentCoResearchers.join(', ') : '-';
         
-        // Fill Report Info
         document.getElementById('pTitle').innerText = titleName;
         document.getElementById('pPi').innerText = piName;
         document.getElementById('pCo').innerText = coName;
         document.getElementById('pDate').innerText = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-        
-        // Fill Report Table
+        document.getElementById('sigName1').innerText = piName !== '-' ? piName : '........................................';
+
+        // Fill Tables
         document.getElementById('pn1').innerText = res.n1; document.getElementById('pm1').innerText = res.m1; document.getElementById('psd1').innerText = res.sd1;
         document.getElementById('pn2').innerText = res.n2; document.getElementById('pm2').innerText = res.m2; document.getElementById('psd2').innerText = res.sd2;
 
-        // Fill Report Conclusion text
+        document.getElementById('pMeanDiff').innerText = res.diff.toFixed(2);
+        document.getElementById('pSE').innerText = res.se.toFixed(4);
+        document.getElementById('pTVal').innerText = res.tVal.toFixed(3);
+        document.getElementById('pDf').innerText = res.df;
+        document.getElementById('pCohen').innerText = res.dVal.toFixed(2) + ` (${dInterp})`;
+        document.getElementById('pCI').innerText = `[${res.lower.toFixed(2)}, ${res.upper.toFixed(2)}]`;
+
+        // Conclusion Text
         let reportText = "";
         if(res.isSig) {
-            reportText = `ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลอง (${res.m1}) และกลุ่มควบคุม (${res.m2}) <b>มีความแตกต่างกันอย่างมีนัยสำคัญทางสถิติ</b> ที่ระดับ .05 โดยมีค่าส่วนต่างเฉลี่ย (Mean Difference) เท่ากับ ${res.diff.toFixed(2)} และช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ย (95% CI) อยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งช่วงดังกล่าวไม่ครอบคลุมค่าศูนย์`;
+            reportText = `ผลการวิเคราะห์พบว่า กลุ่มทดลอง (Mean=${res.m1}) มีคะแนนเฉลี่ยแตกต่างจากกลุ่มควบคุม (Mean=${res.m2}) อย่างมีนัยสำคัญทางสถิติ ($t(${res.df})=${res.tVal.toFixed(2)}, p<.05$) โดยมีค่าขนาดอิทธิพล (Effect Size) อยู่ในระดับ<b>${dInterp}</b> ($d=${Math.abs(res.dVal).toFixed(2)}$) และมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ยอยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งไม่ครอบคลุมศูนย์`;
         } else {
-            reportText = `ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลอง (${res.m1}) และกลุ่มควบคุม (${res.m2}) <b>ไม่มีความแตกต่างกัน</b> ที่ระดับนัยสำคัญทางสถิติ .05 โดยมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ย (95% CI) อยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งช่วงดังกล่าวครอบคลุมค่าศูนย์`;
+            reportText = `ผลการวิเคราะห์พบว่า กลุ่มทดลอง (Mean=${res.m1}) และกลุ่มควบคุม (Mean=${res.m2}) <b>ไม่มีความแตกต่างกัน</b>ทางสถิติ ($t(${res.df})=${res.tVal.toFixed(2)}, p>.05$) โดยมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ยอยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งครอบคลุมค่าศูนย์`;
         }
         document.getElementById('printConclusionText').innerHTML = reportText;
 
-        // 3. Prepare Math Substitution String
-        // สร้าง LaTeX string ที่แทนค่าตัวเลขลงไป
-        const subMath = `$$ (${res.m1} - ${res.m2}) \\pm 1.96 \\sqrt{ \\frac{${res.sd1}^2}{${res.n1}} + \\frac{${res.sd2}^2}{${res.n2}} } $$`;
+        // Math Substitution
+        const subMath = `$$ CI = (${res.m1} - ${res.m2}) \\pm 1.96 \\sqrt{ \\frac{${res.sd1}^2}{${res.n1}} + \\frac{${res.sd2}^2}{${res.n2}} } $$ 
+                         $$ CI = ${res.diff.toFixed(2)} \\pm 1.96 (${res.se.toFixed(4)}) = [ ${res.lower.toFixed(2)} , ${res.upper.toFixed(2)} ] $$`;
         
-        // Inject into Print Area
         const printMathBox = document.getElementById('printSubstitutionMath');
         printMathBox.innerHTML = subMath;
-
-        // Trigger MathJax to Render the new formula
-        if(window.MathJax) {
-            MathJax.typesetPromise([printMathBox]).catch((err) => console.log(err));
-        }
+        if(window.MathJax) MathJax.typesetPromise([printMathBox]).catch((err) => console.log(err));
     }
 
     // --- CRUD ---
@@ -473,7 +601,7 @@
                 sd2: document.getElementById('sd2').value, 
                 n2: document.getElementById('n2').value 
             },
-            result: { lower: res.lower.toFixed(2), upper: res.upper.toFixed(2), isSig: res.isSig }
+            result: { lower: res.lower.toFixed(2), upper: res.upper.toFixed(2), isSig: res.isSig, d: res.dVal.toFixed(2) }
         };
 
         if(editId) {
@@ -498,15 +626,12 @@
                     <div style="font-weight:600; color:#2d3748;">${item.title}</div>
                     <div style="font-size:0.85rem; color:#718096;">${item.pi}</div>
                 </td>
-                <td style="font-size:0.85rem;">
-                   <span style="color:var(--accent)">n=${item.stats.n1}</span> vs <span style="color:#718096">n=${item.stats.n2}</span>
-                </td>
-                <td style="font-family:'Prompt'; font-weight:600; color:#2d3748;">
-                    ${item.result.lower}, ${item.result.upper}
-                </td>
+                <td style="font-size:0.85rem;">n=${item.stats.n1} vs n=${item.stats.n2}</td>
+                <td style="font-family:'Prompt'; font-weight:600; color:#2d3748;">${item.result.lower}, ${item.result.upper}</td>
+                <td><span style="background:#e2e8f0; padding:2px 6px; border-radius:4px; font-size:0.8rem;">d=${item.result.d}</span></td>
                 <td class="no-print">
-                    <button onclick="loadEdit(${item.id})" style="border:none; background:none; cursor:pointer; color:#fbbf24; font-size:1.1rem;"><i class="ph ph-pencil-simple"></i></button>
-                    <button onclick="delItem(${item.id})" style="border:none; background:none; cursor:pointer; color:#f87171; font-size:1.1rem;"><i class="ph ph-trash"></i></button>
+                    <button onclick="loadEdit(${item.id})" style="border:none; bg:none; cursor:pointer; color:#fbbf24;"><i class="ph ph-pencil-simple"></i></button>
+                    <button onclick="delItem(${item.id})" style="border:none; bg:none; cursor:pointer; color:#f87171;"><i class="ph ph-trash"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
