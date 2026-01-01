@@ -16,149 +16,106 @@
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.6);
             --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
             --text-main: #2d3748;
             --text-light: #718096;
             --accent: #667eea;
         }
 
-        /* Global Box Sizing เพื่อไม่ให้ Padding ดันเฟรมแตก */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { box-sizing: border-box; }
 
         body {
             font-family: 'Sarabun', sans-serif;
-            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
             background-attachment: fixed;
             margin: 0;
-            padding: 20px 15px; /* ลด Padding ด้านข้างสำหรับมือถือ */
+            padding: 20px 15px;
             color: var(--text-main);
             min-height: 100vh;
-            overflow-x: hidden; /* ป้องกันการเลื่อนซ้ายขวาของ Body */
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 950px;
-            margin: 0 auto;
-            width: 100%;
-        }
+        .container { max-width: 950px; margin: 0 auto; width: 100%; }
 
         /* --- Header --- */
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
+        header { text-align: center; margin-bottom: 30px; }
         .logo-text {
-            font-family: 'Prompt', sans-serif;
-            font-size: 2.2rem; /* ปรับลดลงเล็กน้อยเพื่อให้ safe กับมือถือ */
-            font-weight: 600;
+            font-family: 'Prompt', sans-serif; font-size: 2.2rem; font-weight: 600;
             background: -webkit-linear-gradient(#4a00e0, #8e2de2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-            letter-spacing: -1px;
-            line-height: 1.2;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 0; letter-spacing: -1px; line-height: 1.2;
         }
-        
         .sub-header {
-            font-family: 'Prompt';
-            color: var(--text-light);
-            background: rgba(255,255,255,0.5);
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            backdrop-filter: blur(4px);
+            font-family: 'Prompt'; color: var(--text-light);
+            background: rgba(255,255,255,0.6); display: inline-block;
+            padding: 5px 15px; border-radius: 20px; margin-top: 10px;
+            font-size: 0.9rem; backdrop-filter: blur(4px);
         }
 
-        /* --- Glass Card Style --- */
+        /* --- Glass Panel --- */
         .glass-panel {
-            background: var(--glass-bg);
-            box-shadow: var(--shadow-soft);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
-            border: var(--glass-border);
-            padding: 25px; /* ลด padding เพื่อเพิ่มพื้นที่ในมือถือ */
-            margin-bottom: 25px;
-            width: 100%;
+            background: var(--glass-bg); box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px; border: var(--glass-border);
+            padding: 25px; margin-bottom: 25px; width: 100%;
         }
 
         .section-title {
-            font-family: 'Prompt';
-            font-size: 1.1rem;
-            color: var(--accent);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            font-family: 'Prompt'; font-size: 1.1rem; color: var(--accent);
+            margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
         }
 
         /* --- Inputs --- */
         .input-group { margin-bottom: 15px; }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-            color: #4a5568;
-            font-size: 0.9rem;
-        }
+        label { display: block; margin-bottom: 6px; font-weight: 500; color: #4a5568; font-size: 0.9rem; }
         input {
-            width: 100%;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            font-family: 'Sarabun';
-            font-size: 1rem;
+            width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0; border-radius: 12px; font-family: 'Sarabun'; font-size: 1rem;
         }
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-        }
+        input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15); }
 
-        /* --- Grid Layouts --- */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-        /* --- Co-Researcher Tags --- */
-        .tag-area {
-            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
-        }
+        /* --- Tags --- */
+        .tag-area { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .tag {
             background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
             color: #4a5568; padding: 4px 10px; border-radius: 15px;
             font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
         }
 
-        /* --- Result Box --- */
-        .result-wrapper {
-            background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%);
-            border-radius: 16px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.8);
-            margin-top: 20px;
-            display: none;
+        /* --- Formula Display (New) --- */
+        .formula-card {
+            background: #f8fafc; border: 1px dashed #cbd5e1;
+            border-radius: 15px; padding: 15px; text-align: center;
+            margin-bottom: 20px; overflow-x: auto;
         }
+        .formula-label { font-size: 0.85rem; color: #64748b; margin-bottom: 5px; font-family: 'Prompt'; }
 
-        .ci-value {
-            font-family: 'Prompt';
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 10px 0;
-            word-wrap: break-word; /* ป้องกันตัวเลขยาวดันจอ */
+        /* --- Result Section --- */
+        .result-wrapper {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            border-radius: 16px; padding: 25px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.8); margin-top: 20px; display: none;
         }
+        .ci-value {
+            font-family: 'Prompt'; font-size: 2.2rem; font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 15px 0; word-wrap: break-word;
+        }
+        
+        /* --- Reporting Box (New) --- */
+        .reporting-box {
+            background: #fff; border-left: 4px solid var(--accent);
+            text-align: left; padding: 15px; border-radius: 8px;
+            margin-top: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .reporting-title { font-family:'Prompt'; font-size:0.95rem; font-weight:600; color:#4a5568; margin-bottom:8px; display:flex; gap:8px; align-items:center;}
+        .reporting-text { font-size: 0.9rem; line-height: 1.6; color: #2d3748; background:#f7fafc; padding:10px; border-radius:6px; border:1px solid #edf2f7; }
 
         /* --- Buttons --- */
         .btn-group { display: flex; gap: 10px; margin-top: 25px; }
@@ -166,63 +123,32 @@
             flex: 1; padding: 12px; border: none; border-radius: 12px;
             font-family: 'Prompt'; font-weight: 600; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 5px;
-            font-size: 0.95rem;
+            font-size: 0.95rem; transition: transform 0.2s;
         }
+        .btn:active { transform: scale(0.98); }
         .btn-primary { background: var(--primary-gradient); color: white; }
-        .btn-success { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #0f5132; }
-        .btn-ghost { background: transparent; border: 1px solid #cbd5e0; color: #718096; }
+        .btn-success { background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; }
+        .btn-ghost { background: white; border: 1px solid #cbd5e0; color: #718096; }
 
-        /* --- Table Fix for Mobile --- */
-        .table-container {
-            overflow-x: auto; /* สำคัญ: ทำให้ตารางเลื่อนซ้ายขวาได้ไม่ล้นจอ */
-            -webkit-overflow-scrolling: touch;
-            width: 100%;
-        }
-        .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; min-width: 600px; /* บังคับความกว้างขั้นต่ำ */ }
-        .modern-table th, .modern-table td { padding: 10px 15px; white-space: nowrap; } /* ห้ามตัดคำให้อ่านง่าย */
-        .modern-table td { background: rgba(255,255,255,0.6); backdrop-filter: blur(5px); }
+        /* --- Table --- */
+        .table-container { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+        .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; min-width: 600px; }
+        .modern-table th, .modern-table td { padding: 12px 15px; white-space: nowrap; text-align: left;}
+        .modern-table td { background: rgba(255,255,255,0.7); backdrop-filter: blur(5px); }
+        .modern-table tr td:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+        .modern-table tr td:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
 
-        /* --- Formula Fix for Mobile (MathJax) --- */
-        .formula { 
-            background: rgba(255,255,255,0.5); 
-            padding: 15px; 
-            border-radius: 12px; 
-            text-align: center; 
-            margin: 20px 0; 
-            border: 1px dashed #cbd5e0;
-            
-            /* แก้ปัญหาล้นจอ */
-            overflow-x: auto; 
-            overflow-y: hidden;
-            max-width: 100%;
-            display: block;
-        }
-        
-        /* บังคับ MathJax ให้ Scroll ได้ */
-        mjx-container {
-            overflow-x: auto !important;
-            overflow-y: hidden;
-            max-width: 100% !important;
-            padding: 10px 0;
-        }
-
-        .quote { border-left: 4px solid #667eea; background: rgba(102, 126, 234, 0.05); padding: 15px; border-radius: 0 8px 8px 0; font-size: 0.9rem; }
-
-        /* --- Responsive Queries --- */
         @media (max-width: 768px) {
-            .grid-2, .grid-3 { grid-template-columns: 1fr; } /* เรียงแนวตั้งในมือถือ */
-            .btn-group { flex-direction: column; } /* ปุ่มเรียงลงมา */
-            .glass-panel { padding: 20px; border-radius: 16px; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; }
             .logo-text { font-size: 1.8rem; }
             .ci-value { font-size: 1.8rem; }
-            .btn { width: 100%; padding: 14px; }
         }
-
         @media print {
             body { background: white; padding: 0; }
             .no-print { display: none !important; }
             .glass-panel { box-shadow: none; border: none; padding: 0; background: white; }
-            .table-container { overflow-x: visible; }
+            .reporting-box { border: 1px solid #ccc; border-left: 4px solid #000; }
         }
     </style>
 </head>
@@ -261,10 +187,17 @@
 
         <div style="height:1px; background:rgba(0,0,0,0.05); margin: 25px 0;"></div>
 
-        <div class="section-title"><i class="ph ph-sliders-horizontal"></i> ข้อมูลทางสถิติ</div>
+        <div class="section-title"><i class="ph ph-function"></i> การคำนวณและสูตร (Calculation)</div>
+
+        <div class="formula-card">
+            <div class="formula-label">สูตร 95% CI ฉบับสมบูรณ์</div>
+            <div style="font-size:1.1rem; padding:10px;">
+                $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+            </div>
+        </div>
         
         <div class="grid-2">
-            <div style="background:rgba(255,255,255,0.4); padding:15px; border-radius:16px;">
+            <div style="background:rgba(255,255,255,0.5); padding:15px; border-radius:16px;">
                 <strong style="color:var(--accent); display:block; margin-bottom:10px;">🧪 กลุ่มทดลอง (Exp)</strong>
                 <div class="grid-3">
                     <div><label>Mean</label><input type="number" step="any" id="m1" value="0"></div>
@@ -273,7 +206,7 @@
                 </div>
             </div>
 
-            <div style="background:rgba(255,255,255,0.4); padding:15px; border-radius:16px;">
+            <div style="background:rgba(255,255,255,0.5); padding:15px; border-radius:16px;">
                 <strong style="color:#718096; display:block; margin-bottom:10px;">🛡️ กลุ่มควบคุม (Control)</strong>
                 <div class="grid-3">
                     <div><label>Mean</label><input type="number" step="any" id="m2" value="0"></div>
@@ -286,7 +219,14 @@
         <div id="resultBox" class="result-wrapper">
             <div style="font-size:0.85rem; color:#718096; letter-spacing:1px; text-transform:uppercase;">95% Confidence Interval</div>
             <div class="ci-value" id="ciText">--</div>
-            <div id="interpretText" style="font-weight:500; font-size:0.95rem;"></div>
+            <div id="interpretText" style="font-weight:500; font-size:1rem;"></div>
+
+            <div class="reporting-box">
+                <div class="reporting-title"><i class="ph ph-pencil-simple-line"></i> ตัวอย่างการเขียนรายงานผล (Research Reporting)</div>
+                <div class="reporting-text" id="reportText">
+                    ...กดคำนวณเพื่อดูตัวอย่างการเขียน...
+                </div>
+            </div>
         </div>
 
         <div class="btn-group">
@@ -318,29 +258,6 @@
                 <tbody id="tableBody">
                     </tbody>
             </table>
-        </div>
-    </div>
-
-    <div class="glass-panel" style="font-size:0.9rem; line-height:1.6; color:#4a5568;">
-        <div class="section-title"><i class="ph ph-graduation-cap"></i> สรุปสูตรและที่มา (Methodology)</div>
-        
-        <p>การวิเคราะห์ความแตกต่างของค่าเฉลี่ย 2 กลุ่มอิสระ (Independent Samples)</p>
-
-        <div style="margin-top:15px;"><strong>1. สูตรคำนวณ Standard Error (SE)</strong></div>
-        <div class="formula">
-            $$ SE_{\bar{X}_1-\bar{X}_2} = \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
-        </div>
-        
-        <div style="margin-top:15px;"><strong>2. ที่มาของค่า Z = 1.96</strong></div>
-        <p>ที่ระดับความเชื่อมั่น 95% ($\alpha = 0.05$) บนการแจกแจงปกติมาตรฐาน พื้นที่ใต้กราฟตรงกลาง 95% จะถูกล้อมรอบด้วยค่า Z-score ที่ $\pm 1.96$</p>
-
-        <div style="margin-top:15px;"><strong>3. สูตร 95% CI ฉบับสมบูรณ์</strong></div>
-        <div class="formula">
-            $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
-        </div>
-        
-        <div class="quote">
-            "การคำนวณช่วงความเชื่อมั่นร้อยละ 95 ใช้ค่าคงที่ Z เท่ากับ 1.96 ซึ่งได้จากการแจกแจงปกติมาตรฐาน โดยครอบคลุมพื้นที่ใต้โค้งปกติร้อยละ 95"
         </div>
     </div>
 
@@ -395,7 +312,7 @@
         const me = 1.96 * se;
         const lower = diff - me;
         const upper = diff + me;
-        const isSig = (lower * upper > 0);
+        const isSig = (lower * upper > 0); // เครื่องหมายเหมือนกัน = Sig
 
         return { diff, lower, upper, isSig };
     }
@@ -407,9 +324,28 @@
         const box = document.getElementById('resultBox');
         box.style.display = 'block';
         document.getElementById('ciText').innerText = `[ ${res.lower.toFixed(2)} , ${res.upper.toFixed(2)} ]`;
-        document.getElementById('interpretText').innerHTML = res.isSig 
-            ? `<span style="color:#059669; background:#d1fae5; padding:4px 10px; border-radius:10px;">✨ Significant (แตกต่างกันจริง)</span>`
-            : `<span style="color:#718096; background:#edf2f7; padding:4px 10px; border-radius:10px;">Not Significant (ไม่แตกต่าง)</span>`;
+        
+        // แปลผล
+        const interpretElem = document.getElementById('interpretText');
+        const reportElem = document.getElementById('reportText');
+        
+        if(res.isSig) {
+            interpretElem.innerHTML = `<span style="color:#059669; background:#d1fae5; padding:4px 12px; border-radius:20px;">✨ Significant (แตกต่างกันจริง)</span>`;
+            // รายงานผลแบบ Sig
+            reportElem.innerHTML = `
+                "ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลองและกลุ่มควบคุม <b>มีความแตกต่างกันอย่างมีนัยสำคัญทางสถิติ</b> ที่ระดับ .05 
+                โดยมีผลต่างค่าเฉลี่ยเท่ากับ ${res.diff.toFixed(2)} 
+                และมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ยอยู่ระหว่าง 
+                <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b>"
+            `;
+        } else {
+            interpretElem.innerHTML = `<span style="color:#718096; background:#edf2f7; padding:4px 12px; border-radius:20px;">Not Significant (ไม่แตกต่าง)</span>`;
+            // รายงานผลแบบ Not Sig
+            reportElem.innerHTML = `
+                "ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลองและกลุ่มควบคุม <b>ไม่มีความแตกต่างกัน</b> 
+                ที่ระดับนัยสำคัญทางสถิติ .05 (95% CI: ${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)})"
+            `;
+        }
     }
 
     // --- CRUD ---
