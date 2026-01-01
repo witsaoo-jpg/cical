@@ -87,13 +87,12 @@
             font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
         }
 
-        /* --- Formula Display (New) --- */
-        .formula-card {
+        /* --- Formula Display (Small) --- */
+        .formula-card-small {
             background: #f8fafc; border: 1px dashed #cbd5e1;
             border-radius: 15px; padding: 15px; text-align: center;
             margin-bottom: 20px; overflow-x: auto;
         }
-        .formula-label { font-size: 0.85rem; color: #64748b; margin-bottom: 5px; font-family: 'Prompt'; }
 
         /* --- Result Section --- */
         .result-wrapper {
@@ -108,14 +107,28 @@
             margin: 15px 0; word-wrap: break-word;
         }
         
-        /* --- Reporting Box (New) --- */
+        /* --- Reporting Box --- */
         .reporting-box {
             background: #fff; border-left: 4px solid var(--accent);
             text-align: left; padding: 15px; border-radius: 8px;
             margin-top: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
-        .reporting-title { font-family:'Prompt'; font-size:0.95rem; font-weight:600; color:#4a5568; margin-bottom:8px; display:flex; gap:8px; align-items:center;}
         .reporting-text { font-size: 0.9rem; line-height: 1.6; color: #2d3748; background:#f7fafc; padding:10px; border-radius:6px; border:1px solid #edf2f7; }
+
+        /* --- Knowledge/Academic Section (New) --- */
+        .knowledge-content { font-size: 0.95rem; line-height: 1.8; color: #4a5568; }
+        .topic-header {
+            font-weight: 600; color: #2d3748; margin-top: 20px; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .formula-display {
+            background: rgba(255,255,255,0.6); border-radius: 10px; padding: 15px;
+            text-align: center; margin: 15px 0; border: 1px solid #e2e8f0; overflow-x: auto;
+        }
+        .thesis-quote {
+            background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 15px;
+            border-radius: 0 8px 8px 0; margin: 15px 0; font-style: italic; color: #0369a1; font-size: 0.9rem;
+        }
 
         /* --- Buttons --- */
         .btn-group { display: flex; gap: 10px; margin-top: 25px; }
@@ -147,8 +160,9 @@
         @media print {
             body { background: white; padding: 0; }
             .no-print { display: none !important; }
-            .glass-panel { box-shadow: none; border: none; padding: 0; background: white; }
+            .glass-panel { box-shadow: none; border: none; padding: 0; background: white; margin-bottom: 20px; }
             .reporting-box { border: 1px solid #ccc; border-left: 4px solid #000; }
+            .knowledge-content { page-break-before: always; } /* ขึ้นหน้าใหม่สำหรับความรู้ */
         }
     </style>
 </head>
@@ -187,12 +201,12 @@
 
         <div style="height:1px; background:rgba(0,0,0,0.05); margin: 25px 0;"></div>
 
-        <div class="section-title"><i class="ph ph-function"></i> การคำนวณและสูตร (Calculation)</div>
+        <div class="section-title"><i class="ph ph-function"></i> การคำนวณ (Calculation)</div>
 
-        <div class="formula-card">
-            <div class="formula-label">สูตร 95% CI ฉบับสมบูรณ์</div>
-            <div style="font-size:1.1rem; padding:10px;">
-                $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+        <div class="formula-card-small">
+            <div style="font-size:0.85rem; color:#64748b; margin-bottom:5px;">สูตร 95% CI</div>
+            <div style="font-size:1.1rem;">
+                $$ (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
             </div>
         </div>
         
@@ -222,7 +236,9 @@
             <div id="interpretText" style="font-weight:500; font-size:1rem;"></div>
 
             <div class="reporting-box">
-                <div class="reporting-title"><i class="ph ph-pencil-simple-line"></i> ตัวอย่างการเขียนรายงานผล (Research Reporting)</div>
+                <div style="font-family:'Prompt'; font-size:0.95rem; font-weight:600; color:#4a5568; margin-bottom:8px;">
+                    <i class="ph ph-pencil-simple-line"></i> ตัวอย่างการเขียนรายงานผล (Research Reporting)
+                </div>
                 <div class="reporting-text" id="reportText">
                     ...กดคำนวณเพื่อดูตัวอย่างการเขียน...
                 </div>
@@ -259,6 +275,34 @@
                     </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="glass-panel knowledge-content">
+        <div class="section-title"><i class="ph ph-graduation-cap"></i> ที่มาและความหมาย (Methodology & Theory)</div>
+        <p>สำหรับผู้ที่สนใจศึกษาที่มาของตัวเลข หรือนำไปใช้อ้างอิงในบทที่ 3 (วิธีดำเนินการวิจัย)</p>
+
+        <div class="topic-header">1️⃣ สูตร Standard Error (SE) ของผลต่างค่าเฉลี่ย</div>
+        <div>กรณีเปรียบเทียบค่าเฉลี่ย 2 กลุ่มอิสระ (Independent samples) เราใช้สูตร:</div>
+        <div class="formula-display">
+            $$ SE_{\bar{X}_1-\bar{X}_2} = \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+        </div>
+        <div><small>โดยที่ $SD$ คือส่วนเบี่ยงเบนมาตรฐาน และ $n$ คือขนาดตัวอย่างของแต่ละกลุ่ม</small></div>
+        <div class="thesis-quote">
+            "ส่วนคลาดเคลื่อนมาตรฐานของผลต่างค่าเฉลี่ย (Standard Error of Mean Difference) คำนวณจากความแปรปรวนของทั้งสองกลุ่มตามสูตรทางสถิติ"
+        </div>
+
+        <div class="topic-header">2️⃣ ที่มาของค่า Z = 1.96</div>
+        <div>
+            ค่า <b>1.96</b> มาจากการแจกแจงปกติมาตรฐาน (Standard Normal Distribution) ที่ระดับความเชื่อมั่น 95% ($\alpha = 0.05$)
+            ซึ่งหมายความว่า พื้นที่ใต้กราฟตรงกลาง 95% จะถูกล้อมรอบด้วยค่า Z-score ตั้งแต่ -1.96 ถึง +1.96
+        </div>
+
+        <div class="topic-header">3️⃣ การแปลผล (Interpretation)</div>
+        <ul>
+            <li><b>Sig (แตกต่างกันจริง):</b> ช่วงความเชื่อมั่น <b>ไม่คร่อม 0</b> (เช่น เป็นบวกทั้งคู่ หรือ ลบทั้งคู่) แสดงว่าค่าเฉลี่ยของสองกลุ่มต่างกันจริง</li>
+            <li><b>Not Sig (ไม่แตกต่าง):</b> ช่วงความเชื่อมั่น <b>คร่อม 0</b> (มีค่าลบและบวกในตัวเดียวกัน) แสดงว่ามีความเป็นไปได้ที่ผลต่างจะเป็น 0 (คือเท่ากัน)</li>
+        </ul>
+
     </div>
 
     <footer style="text-align:center; color:#a0aec0; font-size:0.8rem; margin-top:30px; margin-bottom:10px;">
@@ -312,7 +356,7 @@
         const me = 1.96 * se;
         const lower = diff - me;
         const upper = diff + me;
-        const isSig = (lower * upper > 0); // เครื่องหมายเหมือนกัน = Sig
+        const isSig = (lower * upper > 0);
 
         return { diff, lower, upper, isSig };
     }
@@ -325,13 +369,12 @@
         box.style.display = 'block';
         document.getElementById('ciText').innerText = `[ ${res.lower.toFixed(2)} , ${res.upper.toFixed(2)} ]`;
         
-        // แปลผล
+        // แปลผล & รายงาน
         const interpretElem = document.getElementById('interpretText');
         const reportElem = document.getElementById('reportText');
         
         if(res.isSig) {
             interpretElem.innerHTML = `<span style="color:#059669; background:#d1fae5; padding:4px 12px; border-radius:20px;">✨ Significant (แตกต่างกันจริง)</span>`;
-            // รายงานผลแบบ Sig
             reportElem.innerHTML = `
                 "ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลองและกลุ่มควบคุม <b>มีความแตกต่างกันอย่างมีนัยสำคัญทางสถิติ</b> ที่ระดับ .05 
                 โดยมีผลต่างค่าเฉลี่ยเท่ากับ ${res.diff.toFixed(2)} 
@@ -340,7 +383,6 @@
             `;
         } else {
             interpretElem.innerHTML = `<span style="color:#718096; background:#edf2f7; padding:4px 12px; border-radius:20px;">Not Significant (ไม่แตกต่าง)</span>`;
-            // รายงานผลแบบ Not Sig
             reportElem.innerHTML = `
                 "ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลองและกลุ่มควบคุม <b>ไม่มีความแตกต่างกัน</b> 
                 ที่ระดับนัยสำคัญทางสถิติ .05 (95% CI: ${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)})"
