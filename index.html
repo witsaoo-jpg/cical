@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Futuristic CI Calculator</title>
+    <title>Futuristic CI Calculator & Report Generator</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
     
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -16,7 +16,7 @@
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-bg: rgba(255, 255, 255, 0.9);
             --glass-border: 1px solid rgba(255, 255, 255, 0.6);
             --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
             --text-main: #2d3748;
@@ -30,14 +30,16 @@
             font-family: 'Sarabun', sans-serif;
             background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
             background-attachment: fixed;
-            margin: 0;
-            padding: 20px 15px;
+            margin: 0; padding: 20px 15px;
             color: var(--text-main);
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
         .container { max-width: 950px; margin: 0 auto; width: 100%; }
+
+        /* --- UI Elements (Screen Only) --- */
+        .screen-only { display: block; }
+        .print-only { display: none; }
 
         /* --- Header --- */
         header { text-align: center; margin-bottom: 30px; }
@@ -45,26 +47,25 @@
             font-family: 'Prompt', sans-serif; font-size: 2.2rem; font-weight: 600;
             background: -webkit-linear-gradient(#4a00e0, #8e2de2);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin: 0; letter-spacing: -1px; line-height: 1.2;
+            margin: 0;
         }
         .sub-header {
             font-family: 'Prompt'; color: var(--text-light);
             background: rgba(255,255,255,0.6); display: inline-block;
             padding: 5px 15px; border-radius: 20px; margin-top: 10px;
-            font-size: 0.9rem; backdrop-filter: blur(4px);
+            font-size: 0.9rem;
         }
 
         /* --- Glass Panel --- */
         .glass-panel {
             background: var(--glass-bg); box-shadow: var(--shadow-soft);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px; border: var(--glass-border);
-            padding: 25px; margin-bottom: 25px; width: 100%;
+            backdrop-filter: blur(12px); border-radius: 20px;
+            border: var(--glass-border); padding: 25px; margin-bottom: 25px; width: 100%;
         }
 
         .section-title {
             font-family: 'Prompt'; font-size: 1.1rem; color: var(--accent);
-            margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
         }
 
         /* --- Inputs --- */
@@ -87,13 +88,6 @@
             font-size: 0.8rem; display: flex; align-items: center; gap: 5px;
         }
 
-        /* --- Formula Display (Small) --- */
-        .formula-card-small {
-            background: #f8fafc; border: 1px dashed #cbd5e1;
-            border-radius: 15px; padding: 15px; text-align: center;
-            margin-bottom: 20px; overflow-x: auto;
-        }
-
         /* --- Result Section --- */
         .result-wrapper {
             background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
@@ -106,31 +100,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             margin: 15px 0; word-wrap: break-word;
         }
-        
-        /* --- Reporting Box --- */
-        .reporting-box {
-            background: #fff; border-left: 4px solid var(--accent);
-            text-align: left; padding: 15px; border-radius: 8px;
-            margin-top: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-        .reporting-text { font-size: 0.9rem; line-height: 1.6; color: #2d3748; background:#f7fafc; padding:10px; border-radius:6px; border:1px solid #edf2f7; }
 
-        /* --- Knowledge/Academic Section (New) --- */
-        .knowledge-content { font-size: 0.95rem; line-height: 1.8; color: #4a5568; }
-        .topic-header {
-            font-weight: 600; color: #2d3748; margin-top: 20px; margin-bottom: 10px;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .formula-display {
-            background: rgba(255,255,255,0.6); border-radius: 10px; padding: 15px;
-            text-align: center; margin: 15px 0; border: 1px solid #e2e8f0; overflow-x: auto;
-        }
-        .thesis-quote {
-            background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 15px;
-            border-radius: 0 8px 8px 0; margin: 15px 0; font-style: italic; color: #0369a1; font-size: 0.9rem;
-        }
-
-        /* --- Buttons --- */
         .btn-group { display: flex; gap: 10px; margin-top: 25px; }
         .btn {
             flex: 1; padding: 12px; border: none; border-radius: 12px;
@@ -138,45 +108,83 @@
             display: flex; align-items: center; justify-content: center; gap: 5px;
             font-size: 0.95rem; transition: transform 0.2s;
         }
-        .btn:active { transform: scale(0.98); }
         .btn-primary { background: var(--primary-gradient); color: white; }
         .btn-success { background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; }
         .btn-ghost { background: white; border: 1px solid #cbd5e0; color: #718096; }
 
         /* --- Table --- */
-        .table-container { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+        .table-container { overflow-x: auto; width: 100%; }
         .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; min-width: 600px; }
         .modern-table th, .modern-table td { padding: 12px 15px; white-space: nowrap; text-align: left;}
-        .modern-table td { background: rgba(255,255,255,0.7); backdrop-filter: blur(5px); }
+        .modern-table td { background: rgba(255,255,255,0.7); }
         .modern-table tr td:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
         .modern-table tr td:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+
+        /* =========================================
+           PRINT STYLES (สำหรับ A4 Formal Report)
+           ========================================= */
+        @media print {
+            body { 
+                background: white; padding: 0; margin: 0; 
+                font-size: 12pt; color: black;
+            }
+            .container { max-width: 100%; width: 100%; }
+            
+            /* ซ่อน UI หน้าจอปกติ */
+            .screen-only, .glass-panel, header, .btn-group { display: none !important; }
+            
+            /* แสดงส่วนรายงาน */
+            .print-only { display: block !important; }
+
+            /* จัดรูปแบบรายงาน */
+            #printArea {
+                padding: 40px 50px;
+                line-height: 1.6;
+            }
+            #printHeader {
+                text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 20px;
+            }
+            #printHeader h1 { font-family: 'Prompt'; font-size: 18pt; margin: 0; }
+            #printHeader p { margin: 5px 0 0 0; color: #333; }
+            
+            .report-section { margin-bottom: 25px; }
+            .report-label { font-weight: bold; font-family: 'Sarabun'; font-size: 14pt; margin-bottom: 10px; border-left: 5px solid #667eea; padding-left: 10px; }
+            
+            .info-grid { display: grid; grid-template-columns: 150px 1fr; margin-bottom: 8px; }
+            .info-label { font-weight: bold; }
+            
+            .stat-table-print {
+                width: 100%; border-collapse: collapse; margin: 15px 0;
+            }
+            .stat-table-print th, .stat-table-print td {
+                border: 1px solid #000; padding: 10px; text-align: center;
+            }
+            .stat-table-print th { background-color: #f0f0f0; }
+
+            /* กล่องสูตรใน Print */
+            .formula-print-box {
+                border: 1px dashed #666; padding: 15px; 
+                margin: 15px 0; text-align: center;
+            }
+        }
 
         @media (max-width: 768px) {
             .grid-2, .grid-3 { grid-template-columns: 1fr; }
             .btn-group { flex-direction: column; }
-            .logo-text { font-size: 1.8rem; }
-            .ci-value { font-size: 1.8rem; }
-        }
-        @media print {
-            body { background: white; padding: 0; }
-            .no-print { display: none !important; }
-            .glass-panel { box-shadow: none; border: none; padding: 0; background: white; margin-bottom: 20px; }
-            .reporting-box { border: 1px solid #ccc; border-left: 4px solid #000; }
-            .knowledge-content { page-break-before: always; } /* ขึ้นหน้าใหม่สำหรับความรู้ */
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
+    
+    <header class="screen-only">
         <h1 class="logo-text">Research CI Calc</h1>
         <div class="sub-header">Professional Tool for Nursing Research</div>
     </header>
 
-    <div class="glass-panel no-print">
+    <div class="glass-panel screen-only">
         <input type="hidden" id="editId">
-        
         <div class="section-title"><i class="ph ph-user-circle"></i> ข้อมูลโครงการวิจัย</div>
         
         <div class="grid-2">
@@ -201,14 +209,7 @@
 
         <div style="height:1px; background:rgba(0,0,0,0.05); margin: 25px 0;"></div>
 
-        <div class="section-title"><i class="ph ph-function"></i> การคำนวณ (Calculation)</div>
-
-        <div class="formula-card-small">
-            <div style="font-size:0.85rem; color:#64748b; margin-bottom:5px;">สูตร 95% CI</div>
-            <div style="font-size:1.1rem;">
-                $$ (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
-            </div>
-        </div>
+        <div class="section-title"><i class="ph ph-function"></i> ข้อมูลสถิติ (Statistical Data)</div>
         
         <div class="grid-2">
             <div style="background:rgba(255,255,255,0.5); padding:15px; border-radius:16px;">
@@ -219,7 +220,6 @@
                     <div><label>n</label><input type="number" id="n1" value="0"></div>
                 </div>
             </div>
-
             <div style="background:rgba(255,255,255,0.5); padding:15px; border-radius:16px;">
                 <strong style="color:#718096; display:block; margin-bottom:10px;">🛡️ กลุ่มควบคุม (Control)</strong>
                 <div class="grid-3">
@@ -234,15 +234,6 @@
             <div style="font-size:0.85rem; color:#718096; letter-spacing:1px; text-transform:uppercase;">95% Confidence Interval</div>
             <div class="ci-value" id="ciText">--</div>
             <div id="interpretText" style="font-weight:500; font-size:1rem;"></div>
-
-            <div class="reporting-box">
-                <div style="font-family:'Prompt'; font-size:0.95rem; font-weight:600; color:#4a5568; margin-bottom:8px;">
-                    <i class="ph ph-pencil-simple-line"></i> ตัวอย่างการเขียนรายงานผล (Research Reporting)
-                </div>
-                <div class="reporting-text" id="reportText">
-                    ...กดคำนวณเพื่อดูตัวอย่างการเขียน...
-                </div>
-            </div>
         </div>
 
         <div class="btn-group">
@@ -252,14 +243,13 @@
         </div>
     </div>
 
-    <div class="glass-panel">
+    <div class="glass-panel screen-only">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <div class="section-title" style="margin:0;"><i class="ph ph-database"></i> ประวัติการคำนวณ</div>
-            <button onclick="window.print()" class="btn btn-ghost no-print" style="padding:6px 12px; font-size:0.85rem;">
-                <i class="ph ph-printer"></i> PDF
+            <button onclick="window.print()" class="btn btn-ghost" style="padding:6px 12px; font-size:0.85rem;">
+                <i class="ph ph-printer"></i> พิมพ์รายงาน (PDF)
             </button>
         </div>
-        
         <div class="table-container">
             <table class="modern-table">
                 <thead>
@@ -267,47 +257,99 @@
                         <th>โครงการวิจัย</th>
                         <th>กลุ่มตัวอย่าง</th>
                         <th>ผล 95% CI</th>
-                        <th>แปลผล</th>
-                        <th class="no-print" style="text-align:right;">จัดการ</th>
+                        <th>จัดการ</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody">
-                    </tbody>
+                <tbody id="tableBody"></tbody>
             </table>
         </div>
     </div>
-
-    <div class="glass-panel knowledge-content">
-        <div class="section-title"><i class="ph ph-graduation-cap"></i> ที่มาและความหมาย (Methodology & Theory)</div>
-        <p>สำหรับผู้ที่สนใจศึกษาที่มาของตัวเลข หรือนำไปใช้อ้างอิงในบทที่ 3 (วิธีดำเนินการวิจัย)</p>
-
-        <div class="topic-header">1️⃣ สูตร Standard Error (SE) ของผลต่างค่าเฉลี่ย</div>
-        <div>กรณีเปรียบเทียบค่าเฉลี่ย 2 กลุ่มอิสระ (Independent samples) เราใช้สูตร:</div>
-        <div class="formula-display">
-            $$ SE_{\bar{X}_1-\bar{X}_2} = \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+    
+    <div class="glass-panel screen-only" style="margin-bottom:50px;">
+        <div class="section-title"><i class="ph ph-graduation-cap"></i> ที่มาและสูตร</div>
+        <div style="text-align:center; padding:15px; background:#f8fafc; border-radius:10px; border:1px dashed #ccc;">
+            $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
         </div>
-        <div><small>โดยที่ $SD$ คือส่วนเบี่ยงเบนมาตรฐาน และ $n$ คือขนาดตัวอย่างของแต่ละกลุ่ม</small></div>
-        <div class="thesis-quote">
-            "ส่วนคลาดเคลื่อนมาตรฐานของผลต่างค่าเฉลี่ย (Standard Error of Mean Difference) คำนวณจากความแปรปรวนของทั้งสองกลุ่มตามสูตรทางสถิติ"
-        </div>
-
-        <div class="topic-header">2️⃣ ที่มาของค่า Z = 1.96</div>
-        <div>
-            ค่า <b>1.96</b> มาจากการแจกแจงปกติมาตรฐาน (Standard Normal Distribution) ที่ระดับความเชื่อมั่น 95% ($\alpha = 0.05$)
-            ซึ่งหมายความว่า พื้นที่ใต้กราฟตรงกลาง 95% จะถูกล้อมรอบด้วยค่า Z-score ตั้งแต่ -1.96 ถึง +1.96
-        </div>
-
-        <div class="topic-header">3️⃣ การแปลผล (Interpretation)</div>
-        <ul>
-            <li><b>Sig (แตกต่างกันจริง):</b> ช่วงความเชื่อมั่น <b>ไม่คร่อม 0</b> (เช่น เป็นบวกทั้งคู่ หรือ ลบทั้งคู่) แสดงว่าค่าเฉลี่ยของสองกลุ่มต่างกันจริง</li>
-            <li><b>Not Sig (ไม่แตกต่าง):</b> ช่วงความเชื่อมั่น <b>คร่อม 0</b> (มีค่าลบและบวกในตัวเดียวกัน) แสดงว่ามีความเป็นไปได้ที่ผลต่างจะเป็น 0 (คือเท่ากัน)</li>
-        </ul>
-
     </div>
 
-    <footer style="text-align:center; color:#a0aec0; font-size:0.8rem; margin-top:30px; margin-bottom:10px;">
-        Designed by RN. Witsanukorn Oya © 2026
-    </footer>
+
+    <div id="printArea" class="print-only">
+        <div id="printHeader">
+            <h1>บันทึกข้อความ / รายงานผลการวิเคราะห์ข้อมูล</h1>
+            <p>Research Statistical Analysis Report</p>
+        </div>
+
+        <div class="report-section">
+            <div class="report-label">1. ข้อมูลโครงการวิจัย (Project Information)</div>
+            <div class="info-grid"><span class="info-label">ชื่อเรื่องวิจัย:</span> <span id="pTitle">--</span></div>
+            <div class="info-grid"><span class="info-label">ผู้วิจัยหลัก:</span> <span id="pPi">--</span></div>
+            <div class="info-grid"><span class="info-label">ผู้ร่วมวิจัย:</span> <span id="pCo">--</span></div>
+            <div class="info-grid"><span class="info-label">วันที่ออกรายงาน:</span> <span id="pDate">--</span></div>
+        </div>
+
+        <div class="report-section">
+            <div class="report-label">2. ข้อมูลสถิติเบื้องต้น (Descriptive Statistics)</div>
+            <table class="stat-table-print">
+                <thead>
+                    <tr>
+                        <th>กลุ่มตัวอย่าง</th>
+                        <th>จำนวน (n)</th>
+                        <th>ค่าเฉลี่ย (Mean)</th>
+                        <th>ส่วนเบี่ยงเบน (SD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>กลุ่มทดลอง (Experimental)</td>
+                        <td id="pn1">0</td>
+                        <td id="pm1">0</td>
+                        <td id="psd1">0</td>
+                    </tr>
+                    <tr>
+                        <td>กลุ่มควบคุม (Control)</td>
+                        <td id="pn2">0</td>
+                        <td id="pm2">0</td>
+                        <td id="psd2">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="report-section">
+            <div class="report-label">3. การคำนวณและแทนค่าสูตร (Calculation)</div>
+            <p>วิเคราะห์ความแตกต่างค่าเฉลี่ย 2 กลุ่มอิสระที่ระดับความเชื่อมั่น 95% โดยใช้สูตร:</p>
+            <div class="formula-print-box">
+                 $$ CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+            </div>
+            <p><b>แทนค่าตัวเลขในสูตร (Substitution):</b></p>
+            <div class="formula-print-box" id="printSubstitutionMath">
+                (กรุณากดปุ่มคำนวณเพื่อแสดงการแทนค่า)
+            </div>
+        </div>
+
+        <div class="report-section">
+            <div class="report-label">4. สรุปผลการวิจัย (Conclusion)</div>
+            <div style="background:#f9f9f9; padding:15px; border:1px solid #ddd; line-height:1.8;">
+                <div id="printConclusionText">--</div>
+            </div>
+        </div>
+        
+        <div style="margin-top:50px; display:flex; justify-content:space-between; padding-top:20px;">
+            <div style="text-align:center;">
+                ลงชื่อ .......................................................<br>
+                ( ....................................................... )<br>
+                ผู้วิจัยหลัก
+            </div>
+            <div style="text-align:center;">
+                 วันที่ ......... / ......... / ............
+            </div>
+        </div>
+        
+        <div style="margin-top:30px; border-top:1px solid #ccc; font-size:9pt; color:#666; text-align:center; padding-top:10px;">
+            Generated by RN. Witsanukorn Oya Research Tool © 2026
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -340,7 +382,7 @@
         });
     }
 
-    // --- Calculation ---
+    // --- Calculation & Reporting ---
     function calculateStats() {
         const m1 = parseFloat(document.getElementById('m1').value);
         const sd1 = parseFloat(document.getElementById('sd1').value);
@@ -358,35 +400,56 @@
         const upper = diff + me;
         const isSig = (lower * upper > 0);
 
-        return { diff, lower, upper, isSig };
+        return { diff, lower, upper, isSig, m1, m2, sd1, sd2, n1, n2 };
     }
 
     function calculatePreview() {
         const res = calculateStats();
         if(!res) { alert('กรุณาระบุจำนวน n ให้ถูกต้อง'); return; }
         
+        // 1. Update On-Screen Result
         const box = document.getElementById('resultBox');
         box.style.display = 'block';
         document.getElementById('ciText').innerText = `[ ${res.lower.toFixed(2)} , ${res.upper.toFixed(2)} ]`;
+        document.getElementById('interpretText').innerHTML = res.isSig 
+            ? `<span style="color:#059669; background:#d1fae5; padding:4px 12px; border-radius:20px;">✨ Significant (แตกต่างกันจริง)</span>`
+            : `<span style="color:#718096; background:#edf2f7; padding:4px 12px; border-radius:20px;">Not Significant (ไม่แตกต่าง)</span>`;
+
+        // 2. Prepare Data for PRINT REPORT
+        const piName = document.getElementById('piName').value || '-';
+        const titleName = document.getElementById('titleName').value || '-';
+        const coName = currentCoResearchers.length > 0 ? currentCoResearchers.join(', ') : '-';
         
-        // แปลผล & รายงาน
-        const interpretElem = document.getElementById('interpretText');
-        const reportElem = document.getElementById('reportText');
+        // Fill Report Info
+        document.getElementById('pTitle').innerText = titleName;
+        document.getElementById('pPi').innerText = piName;
+        document.getElementById('pCo').innerText = coName;
+        document.getElementById('pDate').innerText = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
         
+        // Fill Report Table
+        document.getElementById('pn1').innerText = res.n1; document.getElementById('pm1').innerText = res.m1; document.getElementById('psd1').innerText = res.sd1;
+        document.getElementById('pn2').innerText = res.n2; document.getElementById('pm2').innerText = res.m2; document.getElementById('psd2').innerText = res.sd2;
+
+        // Fill Report Conclusion text
+        let reportText = "";
         if(res.isSig) {
-            interpretElem.innerHTML = `<span style="color:#059669; background:#d1fae5; padding:4px 12px; border-radius:20px;">✨ Significant (แตกต่างกันจริง)</span>`;
-            reportElem.innerHTML = `
-                "ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลองและกลุ่มควบคุม <b>มีความแตกต่างกันอย่างมีนัยสำคัญทางสถิติ</b> ที่ระดับ .05 
-                โดยมีผลต่างค่าเฉลี่ยเท่ากับ ${res.diff.toFixed(2)} 
-                และมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ยอยู่ระหว่าง 
-                <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b>"
-            `;
+            reportText = `ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลอง (${res.m1}) และกลุ่มควบคุม (${res.m2}) <b>มีความแตกต่างกันอย่างมีนัยสำคัญทางสถิติ</b> ที่ระดับ .05 โดยมีค่าส่วนต่างเฉลี่ย (Mean Difference) เท่ากับ ${res.diff.toFixed(2)} และช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ย (95% CI) อยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งช่วงดังกล่าวไม่ครอบคลุมค่าศูนย์`;
         } else {
-            interpretElem.innerHTML = `<span style="color:#718096; background:#edf2f7; padding:4px 12px; border-radius:20px;">Not Significant (ไม่แตกต่าง)</span>`;
-            reportElem.innerHTML = `
-                "ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลองและกลุ่มควบคุม <b>ไม่มีความแตกต่างกัน</b> 
-                ที่ระดับนัยสำคัญทางสถิติ .05 (95% CI: ${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)})"
-            `;
+            reportText = `ผลการวิเคราะห์พบว่า ค่าเฉลี่ยของกลุ่มทดลอง (${res.m1}) และกลุ่มควบคุม (${res.m2}) <b>ไม่มีความแตกต่างกัน</b> ที่ระดับนัยสำคัญทางสถิติ .05 โดยมีช่วงความเชื่อมั่น 95% ของผลต่างค่าเฉลี่ย (95% CI) อยู่ระหว่าง <b>${res.lower.toFixed(2)} ถึง ${res.upper.toFixed(2)}</b> ซึ่งช่วงดังกล่าวครอบคลุมค่าศูนย์`;
+        }
+        document.getElementById('printConclusionText').innerHTML = reportText;
+
+        // 3. Prepare Math Substitution String
+        // สร้าง LaTeX string ที่แทนค่าตัวเลขลงไป
+        const subMath = `$$ (${res.m1} - ${res.m2}) \\pm 1.96 \\sqrt{ \\frac{${res.sd1}^2}{${res.n1}} + \\frac{${res.sd2}^2}{${res.n2}} } $$`;
+        
+        // Inject into Print Area
+        const printMathBox = document.getElementById('printSubstitutionMath');
+        printMathBox.innerHTML = subMath;
+
+        // Trigger MathJax to Render the new formula
+        if(window.MathJax) {
+            MathJax.typesetPromise([printMathBox]).catch((err) => console.log(err));
         }
     }
 
@@ -430,13 +493,10 @@
         tbody.innerHTML = '';
         [...researchData].sort((a,b) => b.id - a.id).forEach(item => {
             const tr = document.createElement('tr');
-            const coTxt = item.co.length ? `<div style="font-size:0.8rem; color:#a0aec0;">+ ${item.co.join(', ')}</div>` : '';
-            
             tr.innerHTML = `
                 <td>
                     <div style="font-weight:600; color:#2d3748;">${item.title}</div>
                     <div style="font-size:0.85rem; color:#718096;">${item.pi}</div>
-                    ${coTxt}
                 </td>
                 <td style="font-size:0.85rem;">
                    <span style="color:var(--accent)">n=${item.stats.n1}</span> vs <span style="color:#718096">n=${item.stats.n2}</span>
@@ -444,11 +504,8 @@
                 <td style="font-family:'Prompt'; font-weight:600; color:#2d3748;">
                     ${item.result.lower}, ${item.result.upper}
                 </td>
-                <td>
-                    ${item.result.isSig ? '<span style="color:#059669; font-weight:bold;">Sig</span>' : '<span style="color:#a0aec0;">NS</span>'}
-                </td>
-                <td class="no-print" style="text-align:right;">
-                    <button onclick="loadEdit(${item.id})" style="border:none; background:none; cursor:pointer; color:#fbbf24; font-size:1.1rem; margin-right:5px;"><i class="ph ph-pencil-simple"></i></button>
+                <td class="no-print">
+                    <button onclick="loadEdit(${item.id})" style="border:none; background:none; cursor:pointer; color:#fbbf24; font-size:1.1rem;"><i class="ph ph-pencil-simple"></i></button>
                     <button onclick="delItem(${item.id})" style="border:none; background:none; cursor:pointer; color:#f87171; font-size:1.1rem;"><i class="ph ph-trash"></i></button>
                 </td>
             `;
