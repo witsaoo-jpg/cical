@@ -3,470 +3,502 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional CI Calculator & Thesis Helper</title>
+    <title>Futuristic CI Calculator</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffffff">
-    <link rel="apple-touch-icon" href="icon-192.png">
-
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&family=Prompt:wght@400;600&family=Noto+Serif+Thai:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
         :root {
-            --primary: #0284c7;       /* Medical Blue */
-            --primary-dark: #0369a1;
-            --secondary: #64748b;
-            --bg-body: #f8fafc;
-            --surface: #ffffff;
-            --radius: 16px;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+            --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --text-main: #2d3748;
+            --text-light: #718096;
+            --accent: #667eea;
         }
 
         body {
             font-family: 'Sarabun', sans-serif;
-            background-color: var(--bg-body);
-            color: #334155;
+            background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            background-attachment: fixed;
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
+            color: var(--text-main);
             min-height: 100vh;
         }
 
-        .app-container {
-            max-width: 900px;
+        .container {
+            max-width: 950px;
             margin: 0 auto;
         }
 
-        /* --- Header & Search --- */
-        header { text-align: center; margin-bottom: 30px; }
-        h1 {
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .logo-text {
             font-family: 'Prompt', sans-serif;
-            color: #0f172a;
-            margin: 0;
-            font-size: 1.8rem;
-            background: linear-gradient(90deg, #0284c7, #0ea5e9);
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: -webkit-linear-gradient(#4a00e0, #8e2de2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: -1px;
+            text-shadow: 0px 4px 15px rgba(142, 45, 226, 0.15);
+        }
+        
+        .sub-header {
+            font-family: 'Prompt';
+            color: var(--text-light);
+            background: rgba(255,255,255,0.5);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            backdrop-filter: blur(4px);
         }
 
-        .search-bar-container {
-            background: var(--surface);
-            padding: 15px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+        /* --- Glass Card Style --- */
+        .glass-panel {
+            background: var(--glass-bg);
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: var(--glass-border);
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .section-title {
+            font-family: 'Prompt';
+            font-size: 1.2rem;
+            color: var(--accent);
             margin-bottom: 25px;
             display: flex;
+            align-items: center;
             gap: 10px;
+        }
+        .section-title i { font-size: 1.4rem; }
+
+        /* --- Inputs --- */
+        .input-group { margin-bottom: 20px; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Sarabun';
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            box-sizing: border-box;
         }
-        .search-input {
-            flex-grow: 1; padding: 10px; border: 1px solid #cbd5e1;
-            border-radius: 8px; font-family: 'Sarabun';
-        }
-        .btn-search {
-            background: var(--secondary); color: white; border: none;
-            padding: 10px 20px; border-radius: 8px; cursor: pointer;
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            background: white;
         }
 
-        /* --- Cards --- */
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .section-header {
-            font-family: 'Prompt'; font-weight: 600; color: var(--primary);
-            border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 20px;
-            display: flex; align-items: center; gap: 10px;
-        }
+        /* --- Grid Layouts --- */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
 
-        /* --- Form Inputs --- */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #475569; font-size: 0.9rem; }
-        input[type="text"], input[type="number"] {
-            width: 100%; padding: 10px; border: 1px solid #cbd5e1;
-            border-radius: 8px; box-sizing: border-box; font-family: 'Sarabun';
+        /* --- Co-Researcher Tags --- */
+        .tag-area {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
         }
-        
-        /* Co-Researcher Tags */
-        .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .tag {
-            background: #e0f2fe; color: var(--primary); padding: 4px 12px;
-            border-radius: 20px; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            color: #4a5568; padding: 5px 12px; border-radius: 20px;
+            font-size: 0.85rem; display: flex; align-items: center; gap: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .tag i { cursor: pointer; }
+        .tag i { cursor: pointer; color: #e53e3e; }
 
-        /* --- Result --- */
-        .result-box {
-            text-align: center; padding: 25px; background: #f0f9ff;
-            border-radius: 12px; border: 1px dashed var(--primary);
-            margin-top: 20px; display: none;
+        /* --- Result Box (Highlight) --- */
+        .result-wrapper {
+            background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+            margin-top: 20px;
+            display: none;
+            animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .ci-display { font-size: 2.2rem; font-family: 'Prompt'; font-weight: bold; color: var(--primary-dark); }
-        
+        @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+        .ci-value {
+            font-family: 'Prompt';
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
+
         /* --- Buttons --- */
-        .action-bar { display: flex; gap: 10px; margin-top: 25px; }
-        .btn-action {
-            flex: 1; padding: 12px; border: none; border-radius: 10px;
-            font-family: 'Prompt'; font-weight: 600; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
+        .btn-group { display: flex; gap: 15px; margin-top: 30px; }
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Prompt';
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-outline { background: white; border: 1px solid #cbd5e1; color: #64748b; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .btn-primary { background: var(--primary-gradient); color: white; }
+        .btn-success { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #0f5132; }
+        .btn-ghost { background: transparent; border: 2px solid #cbd5e0; color: #718096; }
 
         /* --- Table --- */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: left; }
-        th { background: #f8fafc; font-weight: 600; color: #475569; font-size: 0.9rem; }
+        .modern-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; margin-top: -10px; }
+        .modern-table th {
+            text-align: left; padding: 10px 20px;
+            color: #718096; font-weight: 600; font-size: 0.9rem;
+        }
+        .modern-table td {
+            background: rgba(255,255,255,0.6);
+            padding: 15px 20px;
+            backdrop-filter: blur(5px);
+        }
+        .modern-table tr td:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+        .modern-table tr td:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+        .modern-table tr:hover td { background: white; transform: scale(1.01); transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
-        /* --- Academic Content Section (New) --- */
-        .academic-section {
-            background: #fff; border-left: 5px solid var(--primary);
-        }
-        .academic-title {
-            font-family: 'Noto Serif Thai', serif; font-size: 1.2rem; font-weight: 700;
-            color: #1e293b; margin-top: 20px; margin-bottom: 10px;
-        }
-        .academic-content { font-size: 0.95rem; line-height: 1.8; color: #334155; }
-        .thesis-quote {
-            background: #f1f5f9; padding: 15px; border-radius: 8px;
-            font-style: italic; color: #475569; border-left: 3px solid #94a3b8;
-            margin: 10px 0; font-family: 'Sarabun';
-        }
-        .formula-box {
-            text-align: center; padding: 15px; background: #fafafa;
-            border-radius: 8px; overflow-x: auto; margin: 15px 0;
-        }
+        /* --- Knowledge Section --- */
+        .knowledge-box { font-size: 0.95rem; line-height: 1.8; color: #4a5568; }
+        .formula { background: rgba(255,255,255,0.5); padding: 15px; border-radius: 12px; text-align: center; margin: 20px 0; border: 1px dashed #cbd5e0; }
+        .quote { border-left: 4px solid #667eea; padding-left: 15px; margin: 15px 0; font-style: italic; color: #555; background: rgba(102, 126, 234, 0.05); padding: 15px; border-radius: 0 8px 8px 0; }
 
-        /* --- Print Mode --- */
+        /* Print Mode */
         @media print {
-            body { background: white; font-size: 12pt; }
+            body { background: white; padding: 0; }
             .no-print { display: none !important; }
-            .card { box-shadow: none; border: none; margin: 0; padding: 0; }
-            .tag i { display: none; }
-            .tag { border: none; padding: 0; margin-right: 5px; }
-            .academic-section { page-break-before: always; } /* ขึ้นหน้าใหม่สำหรับทฤษฎี */
+            .glass-panel { box-shadow: none; border: none; padding: 0; margin-bottom: 20px; backdrop-filter: none; background: white; }
+            .btn-group { display: none; }
         }
 
         @media (max-width: 768px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .action-bar { flex-direction: column; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+<div class="container">
+    <header>
+        <h1 class="logo-text">Research CI Calc</h1>
+        <div class="sub-header">Professional Tool for Nursing Research</div>
+    </header>
+
+    <div class="glass-panel no-print">
+        <input type="hidden" id="editId">
         
-        <header>
-            <div style="font-size:0.8rem; color:#64748b; margin-bottom:5px;">MASTER'S DEGREE RESEARCH TOOL</div>
-            <h1>Research CI Calculator</h1>
-            <div style="color:#64748b; font-size:0.9rem;">ระบบคำนวณและอ้างอิงทางสถิติสำหรับงานวิจัย</div>
-        </header>
-
-        <div class="search-bar-container no-print">
-            <i class="ph ph-magnifying-glass" style="font-size: 1.2rem; color: #94a3b8; align-self:center;"></i>
-            <input type="text" id="searchInput" class="search-input" placeholder="ค้นหารหัส ID งานวิจัยเดิม...">
-            <button onclick="searchById()" class="btn-search">ค้นหา</button>
-        </div>
-
-        <div class="card no-print">
-            <div class="section-header"><i class="ph ph-pencil-simple"></i> ข้อมูลงานวิจัย</div>
-            <input type="hidden" id="editId">
-            
-            <div class="form-group">
+        <div class="section-title"><i class="ph ph-user-circle"></i> ข้อมูลโครงการวิจัย</div>
+        
+        <div class="grid-2">
+            <div class="input-group">
                 <label>ชื่อผู้วิจัยหลัก</label>
-                <input type="text" id="piName" placeholder="เช่น พว.วิษณุกรณ์ โอยา">
+                <input type="text" id="piName" placeholder="ระบุชื่อของคุณ...">
             </div>
-
-            <div class="form-group">
-                <label>ผู้ร่วมวิจัย (พิมพ์และกด Enter)</label>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="coInput" onkeypress="handleCoKey(event)">
-                    <button type="button" onclick="addCoResearcher()" style="padding:0 15px; border-radius:8px; border:1px solid #ccc; background:#f1f5f9;"><i class="ph ph-plus"></i></button>
-                </div>
-                <div class="tag-container" id="coContainer"></div>
-            </div>
-
-            <div class="form-group">
+            <div class="input-group">
                 <label>ชื่อเรื่องวิจัย</label>
-                <input type="text" id="titleName">
-            </div>
-
-            <div class="section-header" style="margin-top:25px;"><i class="ph ph-function"></i> ข้อมูลสถิติ (Independent Samples)</div>
-            <div class="form-grid">
-                <div style="background:#f0f9ff; padding:15px; border-radius:12px;">
-                    <strong style="color:var(--primary);">กลุ่มทดลอง (1)</strong>
-                    <div style="margin-top:10px;"><label>Mean</label> <input type="number" step="any" id="m1" value="0"></div>
-                    <div style="margin-top:10px;"><label>SD</label> <input type="number" step="any" id="sd1" value="0"></div>
-                    <div style="margin-top:10px;"><label>n</label> <input type="number" id="n1" value="0"></div>
-                </div>
-                <div style="background:#f8fafc; padding:15px; border-radius:12px; border:1px solid #e2e8f0;">
-                    <strong style="color:#64748b;">กลุ่มควบคุม (2)</strong>
-                    <div style="margin-top:10px;"><label>Mean</label> <input type="number" step="any" id="m2" value="0"></div>
-                    <div style="margin-top:10px;"><label>SD</label> <input type="number" step="any" id="sd2" value="0"></div>
-                    <div style="margin-top:10px;"><label>n</label> <input type="number" id="n2" value="0"></div>
-                </div>
-            </div>
-
-            <div id="resultBox" class="result-box">
-                <div style="color:#64748b; font-size:0.9rem;">95% Confidence Interval</div>
-                <div class="ci-display" id="ciText"></div>
-                <div id="interpretText" style="font-weight:600; margin-top:5px;"></div>
-            </div>
-
-            <div class="action-bar">
-                <button type="button" class="btn-action btn-outline" onclick="resetForm()">ล้างค่า</button>
-                <button type="button" class="btn-action btn-primary" onclick="calculatePreview()">คำนวณ</button>
-                <button type="button" class="btn-action btn-success" onclick="saveData()">บันทึก</button>
+                <input type="text" id="titleName" placeholder="ระบุชื่อเรื่อง...">
             </div>
         </div>
 
-        <div class="card">
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                <div class="section-header" style="border:none; margin:0;"><i class="ph ph-database"></i> ฐานข้อมูลบันทึกผล</div>
-                <button onclick="window.print()" class="btn-search no-print"><i class="ph ph-printer"></i> Print PDF</button>
+        <div class="input-group">
+            <label>ผู้ร่วมวิจัย (พิมพ์ชื่อแล้วกด Enter)</label>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="coInput" onkeypress="handleCoKey(event)" placeholder="เพิ่มชื่อผู้ร่วมวิจัย...">
+                <button type="button" onclick="addCoResearcher()" style="width:50px; border-radius:10px; border:none; background:#edf2f7; cursor:pointer;"><i class="ph ph-plus-bold"></i></button>
             </div>
-            <div style="overflow-x:auto;">
-                <table id="dataTable">
-                    <thead>
-                        <tr>
-                            <th width="10%">ID</th>
-                            <th width="25%">ผู้วิจัย</th>
-                            <th width="25%">ชื่อเรื่อง</th>
-                            <th width="20%">95% CI</th>
-                            <th width="10%">ผล</th>
-                            <th width="10%" class="no-print">จัดการ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
-            </div>
+            <div class="tag-area" id="coContainer"></div>
         </div>
 
-        <div class="card academic-section">
-            <div class="section-header"><i class="ph ph-graduation-cap"></i> สรุปสูตรและที่มา (สำหรับเขียนวิทยานิพนธ์)</div>
-            
-            <div class="academic-content">
-                <div class="academic-title">1️⃣ สูตรการคำนวณ SE (Standard Error)</div>
-                <p>กรณีศึกษานี้เป็นการเปรียบเทียบค่าเฉลี่ย 2 กลุ่มอิสระ (Independent samples)</p>
-                <div class="formula-box">
-                    $$ SE_{\bar{X}_1-\bar{X}_2} = \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+        <div style="height:1px; background:rgba(0,0,0,0.05); margin: 30px 0;"></div>
+
+        <div class="section-title"><i class="ph ph-sliders-horizontal"></i> ข้อมูลทางสถิติ</div>
+        
+        <div class="grid-2">
+            <div style="background:rgba(255,255,255,0.4); padding:20px; border-radius:16px;">
+                <strong style="color:var(--accent); display:block; margin-bottom:15px;">🧪 กลุ่มทดลอง (Experimental)</strong>
+                <div class="grid-3">
+                    <div><label>Mean</label><input type="number" step="any" id="m1" value="0"></div>
+                    <div><label>SD</label><input type="number" step="any" id="sd1" value="0"></div>
+                    <div><label>n</label><input type="number" id="n1" value="0"></div>
                 </div>
-                <p><b>ความหมายของตัวแปร:</b></p>
-                <ul style="list-style:none; padding-left:10px;">
-                    <li>$SD_1, SD_2$ : ส่วนเบี่ยงเบนมาตรฐานของกลุ่มที่ 1 และ 2</li>
-                    <li>$n_1, n_2$ : ขนาดตัวอย่างของกลุ่มที่ 1 และ 2</li>
-                </ul>
-                <p><b>เหตุผลของสูตร:</b> เกิดจากการนำความแปรปรวน (Variance) ของทั้งสองกลุ่มมารวมกัน แล้วถอดรากที่สองเพื่อหาค่า Standard Error รวม</p>
-                
-                <div class="thesis-quote">
-                    <b>✍️ ตัวอย่างการเขียนในวิทยานิพนธ์:</b><br>
-                    "ส่วนคลาดเคลื่อนมาตรฐานของผลต่างค่าเฉลี่ย (Standard Error of Mean Difference) คำนวณจากส่วนเบี่ยงเบนมาตรฐานและขนาดตัวอย่างของทั้งสองกลุ่ม ตามสูตร..."
-                </div>
+            </div>
 
-                <hr style="border:0; border-top:1px dashed #e2e8f0; margin:20px 0;">
-
-                <div class="academic-title">2️⃣ ที่มาของค่า 1.96 (Z-Score)</div>
-                <p>ค่า 1.96 มาจาก <b>การแจกแจงปกติมาตรฐาน (Standard Normal Distribution)</b> ที่ระดับความเชื่อมั่น 95% ($\alpha = 0.05$)</p>
-                <p>เมื่อแบ่งพื้นที่ปฏิเสธสมมติฐานออกเป็นสองข้าง (Two-tailed) ข้างละ 2.5% ($\alpha/2 = 0.025$) ค่า Z ที่เป็นจุดตัดคือ $\pm 1.96$</p>
-                
-                <div style="text-align:center; font-family:monospace; background:#f1f5f9; padding:10px; border-radius:8px;">
-                    |----2.5%----|========= 95% =========|----2.5%----|<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-1.96&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+1.96
-                </div>
-
-                <div class="thesis-quote">
-                    <b>✍️ ตัวอย่างการเขียนในวิทยานิพนธ์:</b><br>
-                    "การคำนวณช่วงความเชื่อมั่นร้อยละ 95 ใช้ค่าคงที่ Z เท่ากับ 1.96 ซึ่งได้จากการแจกแจงปกติมาตรฐาน โดยครอบคลุมพื้นที่ใต้โค้งปกติร้อยละ 95"
-                </div>
-
-                <hr style="border:0; border-top:1px dashed #e2e8f0; margin:20px 0;">
-
-                <div class="academic-title">3️⃣ สูตร 95% CI แบบสมบูรณ์</div>
-                <div class="formula-box">
-                    $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+            <div style="background:rgba(255,255,255,0.4); padding:20px; border-radius:16px;">
+                <strong style="color:#718096; display:block; margin-bottom:15px;">🛡️ กลุ่มควบคุม (Control)</strong>
+                <div class="grid-3">
+                    <div><label>Mean</label><input type="number" step="any" id="m2" value="0"></div>
+                    <div><label>SD</label><input type="number" step="any" id="sd2" value="0"></div>
+                    <div><label>n</label><input type="number" id="n2" value="0"></div>
                 </div>
             </div>
         </div>
 
-        <div style="text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:30px;">
-            Developed by RN. Witsanukorn Oya © 2026
+        <div id="resultBox" class="result-wrapper">
+            <div style="font-size:0.9rem; color:#718096; letter-spacing:1px; text-transform:uppercase;">95% Confidence Interval</div>
+            <div class="ci-value" id="ciText">--</div>
+            <div id="interpretText" style="font-weight:500;"></div>
         </div>
 
+        <div class="btn-group">
+            <button class="btn btn-ghost" onclick="resetForm()"><i class="ph ph-eraser"></i> ล้างค่า</button>
+            <button class="btn btn-primary" onclick="calculatePreview()"><i class="ph ph-calculator"></i> คำนวณผลลัพธ์</button>
+            <button class="btn btn-success" onclick="saveData()"><i class="ph ph-floppy-disk"></i> บันทึกข้อมูล</button>
+        </div>
     </div>
 
-    <script>
-        // --- 1. Variables & Initialization ---
-        let researchData = JSON.parse(localStorage.getItem('researchData')) || [];
-        let currentCoResearchers = [];
+    <div class="glass-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div class="section-title" style="margin:0;"><i class="ph ph-database"></i> ประวัติการคำนวณ</div>
+            <button onclick="window.print()" class="btn btn-ghost no-print" style="padding:8px 15px; font-size:0.9rem;">
+                <i class="ph ph-printer"></i> Print PDF
+            </button>
+        </div>
+        
+        <div style="overflow-x:auto;">
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th width="30%">โครงการวิจัย</th>
+                        <th width="25%">กลุ่มตัวอย่าง</th>
+                        <th width="25%">ผล 95% CI</th>
+                        <th width="10%">แปลผล</th>
+                        <th width="10%" class="no-print" style="text-align:right;">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
 
-        window.onload = function() {
-            renderTable();
+    <div class="glass-panel knowledge-box">
+        <div class="section-title"><i class="ph ph-graduation-cap"></i> สรุปสูตรและที่มา (Methodology)</div>
+        
+        <p>การวิเคราะห์ความแตกต่างของค่าเฉลี่ย 2 กลุ่มอิสระ (Independent Samples) โดยใช้สถิติ 95% Confidence Interval</p>
+
+        <div style="margin-top:20px;"><strong>1. สูตรคำนวณ Standard Error (SE)</strong></div>
+        <div class="formula">
+            $$ SE_{\bar{X}_1-\bar{X}_2} = \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+        </div>
+        <div class="quote">
+            "ส่วนคลาดเคลื่อนมาตรฐานของผลต่างค่าเฉลี่ย (Standard Error of Mean Difference) คำนวณจากส่วนเบี่ยงเบนมาตรฐานและขนาดตัวอย่างของทั้งสองกลุ่ม ตามสูตร..."
+        </div>
+
+        <div style="margin-top:20px;"><strong>2. ที่มาของค่า Z = 1.96</strong></div>
+        <p>ที่ระดับความเชื่อมั่น 95% ($\alpha = 0.05$) บนการแจกแจงปกติมาตรฐาน พื้นที่ใต้กราฟตรงกลาง 95% จะถูกล้อมรอบด้วยค่า Z-score ที่ $\pm 1.96$</p>
+        
+        <div class="quote">
+            "การคำนวณช่วงความเชื่อมั่นร้อยละ 95 ใช้ค่าคงที่ Z เท่ากับ 1.96 ซึ่งได้จากการแจกแจงปกติมาตรฐาน โดยครอบคลุมพื้นที่ใต้โค้งปกติร้อยละ 95"
+        </div>
+
+        <div style="margin-top:20px;"><strong>3. สูตร 95% CI ฉบับสมบูรณ์</strong></div>
+        <div class="formula">
+            $$ 95\% CI = (\bar{X}_1 - \bar{X}_2) \pm 1.96 \sqrt{ \frac{SD_1^2}{n_1} + \frac{SD_2^2}{n_2} } $$
+        </div>
+    </div>
+
+    <footer style="text-align:center; color:#a0aec0; font-size:0.85rem; margin-top:40px;">
+        Designed by RN. Witsanukorn Oya © 2026 | Future Research Tool
+    </footer>
+</div>
+
+<script>
+    // --- Variables ---
+    let researchData = JSON.parse(localStorage.getItem('researchData')) || [];
+    let currentCoResearchers = [];
+
+    window.onload = function() { renderTable(); };
+
+    // --- Co-Researchers Logic ---
+    function handleCoKey(e) { if(e.key === 'Enter') { e.preventDefault(); addCoResearcher(); } }
+    function addCoResearcher() {
+        const input = document.getElementById('coInput');
+        const name = input.value.trim();
+        if(name && !currentCoResearchers.includes(name)) {
+            currentCoResearchers.push(name); renderTags(); input.value = '';
+        }
+    }
+    function removeCoResearcher(index) {
+        currentCoResearchers.splice(index, 1); renderTags();
+    }
+    function renderTags() {
+        const container = document.getElementById('coContainer');
+        container.innerHTML = '';
+        currentCoResearchers.forEach((name, idx) => {
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.innerHTML = `${name} <i class="ph ph-x-circle" onclick="removeCoResearcher(${idx})"></i>`;
+            container.appendChild(tag);
+        });
+    }
+
+    // --- Calculation ---
+    function calculateStats() {
+        const m1 = parseFloat(document.getElementById('m1').value);
+        const sd1 = parseFloat(document.getElementById('sd1').value);
+        const n1 = parseFloat(document.getElementById('n1').value);
+        const m2 = parseFloat(document.getElementById('m2').value);
+        const sd2 = parseFloat(document.getElementById('sd2').value);
+        const n2 = parseFloat(document.getElementById('n2').value);
+
+        if(n1 <=0 || n2 <=0) return null;
+
+        const diff = m1 - m2;
+        const se = Math.sqrt((Math.pow(sd1, 2)/n1) + (Math.pow(sd2, 2)/n2));
+        const me = 1.96 * se;
+        const lower = diff - me;
+        const upper = diff + me;
+        const isSig = (lower * upper > 0);
+
+        return { diff, lower, upper, isSig };
+    }
+
+    function calculatePreview() {
+        const res = calculateStats();
+        if(!res) { alert('กรุณาระบุจำนวน n ให้ถูกต้อง'); return; }
+        
+        const box = document.getElementById('resultBox');
+        box.style.display = 'block';
+        document.getElementById('ciText').innerText = `[ ${res.lower.toFixed(2)} , ${res.upper.toFixed(2)} ]`;
+        document.getElementById('interpretText').innerHTML = res.isSig 
+            ? `<span style="color:#059669; background:#d1fae5; padding:4px 10px; border-radius:10px;">✨ Significant (แตกต่างกันจริง)</span>`
+            : `<span style="color:#718096; background:#edf2f7; padding:4px 10px; border-radius:10px;">Not Significant (ไม่แตกต่าง)</span>`;
+    }
+
+    // --- CRUD ---
+    function saveData() {
+        const res = calculateStats();
+        if(!res) { alert('ข้อมูลไม่ครบถ้วน'); return; }
+        
+        const pi = document.getElementById('piName').value || 'ไม่ระบุชื่อ';
+        const title = document.getElementById('titleName').value || 'ไม่ระบุชื่อเรื่อง';
+        const editId = document.getElementById('editId').value;
+
+        const record = {
+            id: editId ? parseInt(editId) : Date.now(),
+            pi: pi, co: [...currentCoResearchers], title: title,
+            stats: { 
+                m1: document.getElementById('m1').value, 
+                sd1: document.getElementById('sd1').value, 
+                n1: document.getElementById('n1').value,
+                m2: document.getElementById('m2').value, 
+                sd2: document.getElementById('sd2').value, 
+                n2: document.getElementById('n2').value 
+            },
+            result: { lower: res.lower.toFixed(2), upper: res.upper.toFixed(2), isSig: res.isSig }
         };
 
-        // --- 2. Co-Researchers Logic ---
-        function handleCoKey(e) { if(e.key === 'Enter') { e.preventDefault(); addCoResearcher(); } }
-        function addCoResearcher() {
-            const input = document.getElementById('coInput');
-            const name = input.value.trim();
-            if(name && !currentCoResearchers.includes(name)) {
-                currentCoResearchers.push(name);
-                renderTags();
-                input.value = '';
-            }
-        }
-        function removeCoResearcher(index) {
-            currentCoResearchers.splice(index, 1);
-            renderTags();
-        }
-        function renderTags() {
-            const container = document.getElementById('coContainer');
-            container.innerHTML = '';
-            currentCoResearchers.forEach((name, idx) => {
-                const tag = document.createElement('div');
-                tag.className = 'tag';
-                tag.innerHTML = `${name} <i class="ph ph-x" onclick="removeCoResearcher(${idx})"></i>`;
-                container.appendChild(tag);
-            });
+        if(editId) {
+            const idx = researchData.findIndex(r => r.id == editId);
+            if(idx !== -1) researchData[idx] = record;
+        } else {
+            researchData.push(record);
         }
 
-        // --- 3. Calculation ---
-        function calculateStats() {
-            const m1 = parseFloat(document.getElementById('m1').value);
-            const sd1 = parseFloat(document.getElementById('sd1').value);
-            const n1 = parseFloat(document.getElementById('n1').value);
-            const m2 = parseFloat(document.getElementById('m2').value);
-            const sd2 = parseFloat(document.getElementById('sd2').value);
-            const n2 = parseFloat(document.getElementById('n2').value);
+        localStorage.setItem('researchData', JSON.stringify(researchData));
+        renderTable();
+        resetForm();
+    }
 
-            if(n1 <=0 || n2 <=0) return null;
-
-            const diff = m1 - m2;
-            const se = Math.sqrt((Math.pow(sd1, 2)/n1) + (Math.pow(sd2, 2)/n2));
-            const me = 1.96 * se;
-            const lower = diff - me;
-            const upper = diff + me;
-            const isSig = (lower * upper > 0);
-
-            return { diff, lower, upper, isSig };
-        }
-
-        function calculatePreview() {
-            const res = calculateStats();
-            if(!res) { alert('กรุณาระบุ n ให้ถูกต้อง'); return; }
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        [...researchData].sort((a,b) => b.id - a.id).forEach(item => {
+            const tr = document.createElement('tr');
+            const coTxt = item.co.length ? `<div style="font-size:0.8rem; color:#a0aec0;">+ ${item.co.join(', ')}</div>` : '';
             
-            const box = document.getElementById('resultBox');
-            box.style.display = 'block';
-            document.getElementById('ciText').innerText = `[ ${res.lower.toFixed(2)} , ${res.upper.toFixed(2)} ]`;
-            document.getElementById('interpretText').innerHTML = res.isSig 
-                ? `<span style="color:#10b981">Significant (มีนัยสำคัญ)</span>`
-                : `<span style="color:#64748b">Not Significant (ไม่มีนัยสำคัญ)</span>`;
-        }
+            tr.innerHTML = `
+                <td>
+                    <div style="font-weight:600; color:#2d3748;">${item.title}</div>
+                    <div style="font-size:0.85rem; color:#718096;">${item.pi}</div>
+                    ${coTxt}
+                </td>
+                <td style="font-size:0.9rem;">
+                   <span style="color:var(--accent)">n=${item.stats.n1}</span> vs <span style="color:#718096">n=${item.stats.n2}</span>
+                </td>
+                <td style="font-family:'Prompt'; font-weight:600; color:#2d3748;">
+                    ${item.result.lower}, ${item.result.upper}
+                </td>
+                <td>
+                    ${item.result.isSig ? '<span style="color:#059669; font-weight:bold;">Sig</span>' : '<span style="color:#a0aec0;">NS</span>'}
+                </td>
+                <td class="no-print" style="text-align:right;">
+                    <button onclick="loadEdit(${item.id})" style="border:none; background:none; cursor:pointer; color:#fbbf24; font-size:1.1rem; margin-right:5px;"><i class="ph ph-pencil-simple"></i></button>
+                    <button onclick="delItem(${item.id})" style="border:none; background:none; cursor:pointer; color:#f87171; font-size:1.1rem;"><i class="ph ph-trash"></i></button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
 
-        // --- 4. CRUD ---
-        function saveData() {
-            const res = calculateStats();
-            if(!res) { alert('ข้อมูลไม่ครบถ้วน'); return; }
-            
-            const pi = document.getElementById('piName').value;
-            const title = document.getElementById('titleName').value;
-            const editId = document.getElementById('editId').value;
-
-            const record = {
-                id: editId ? parseInt(editId) : Date.now(),
-                pi: pi, co: [...currentCoResearchers], title: title,
-                stats: { 
-                    m1: document.getElementById('m1').value, 
-                    sd1: document.getElementById('sd1').value, 
-                    n1: document.getElementById('n1').value,
-                    m2: document.getElementById('m2').value, 
-                    sd2: document.getElementById('sd2').value, 
-                    n2: document.getElementById('n2').value 
-                },
-                result: { lower: res.lower.toFixed(2), upper: res.upper.toFixed(2), isSig: res.isSig }
-            };
-
-            if(editId) {
-                const idx = researchData.findIndex(r => r.id == editId);
-                if(idx !== -1) researchData[idx] = record;
-            } else {
-                researchData.push(record);
-            }
-
+    function delItem(id) {
+        if(confirm('ลบข้อมูลนี้?')) {
+            researchData = researchData.filter(r => r.id !== id);
             localStorage.setItem('researchData', JSON.stringify(researchData));
             renderTable();
-            resetForm();
-            alert('บันทึกเรียบร้อย');
         }
+    }
 
-        function renderTable() {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-            [...researchData].sort((a,b) => b.id - a.id).forEach(item => {
-                const tr = document.createElement('tr');
-                const coTxt = item.co.length ? `<br><small style="color:#999">+ ${item.co.join(', ')}</small>` : '';
-                tr.innerHTML = `
-                    <td><span style="background:#e0f2fe; padding:2px 6px; border-radius:4px; color:#0284c7; font-size:0.8rem;">${item.id.toString().slice(-4)}</span></td>
-                    <td><b>${item.pi}</b>${coTxt}</td>
-                    <td>${item.title}</td>
-                    <td style="font-family:'Prompt'">${item.result.lower}, ${item.result.upper}</td>
-                    <td>${item.result.isSig ? '<span style="color:#10b981; font-weight:bold;">Sig</span>' : '<span style="color:#94a3b8;">NS</span>'}</td>
-                    <td class="no-print">
-                        <button onclick="loadEdit(${item.id})" style="border:none; bg:none; cursor:pointer; color:#f59e0b;"><i class="ph ph-pencil-simple-line"></i></button>
-                        <button onclick="delItem(${item.id})" style="border:none; bg:none; cursor:pointer; color:#ef4444;"><i class="ph ph-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
+    function loadEdit(id) {
+        const item = researchData.find(r => r.id === id);
+        if(!item) return;
+        document.getElementById('editId').value = item.id;
+        document.getElementById('piName').value = item.pi;
+        document.getElementById('titleName').value = item.title;
+        currentCoResearchers = [...item.co]; renderTags();
+        
+        document.getElementById('m1').value = item.stats.m1; document.getElementById('sd1').value = item.stats.sd1; document.getElementById('n1').value = item.stats.n1;
+        document.getElementById('m2').value = item.stats.m2; document.getElementById('sd2').value = item.stats.sd2; document.getElementById('n2').value = item.stats.n2;
+        
+        calculatePreview();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        function delItem(id) {
-            if(confirm('ยืนยันการลบ?')) {
-                researchData = researchData.filter(r => r.id !== id);
-                localStorage.setItem('researchData', JSON.stringify(researchData));
-                renderTable();
-            }
-        }
+    function resetForm() {
+        document.getElementById('editId').value = '';
+        document.querySelectorAll('input').forEach(i => i.value = (i.type=='number'?0:''));
+        currentCoResearchers = []; renderTags();
+        document.getElementById('resultBox').style.display = 'none';
+    }
+</script>
 
-        function searchById() {
-            const id = document.getElementById('searchInput').value.trim();
-            if(!id) return;
-            // ค้นหาแบบ String match เผื่อจำได้แค่บางส่วน
-            const found = researchData.find(r => r.id.toString().includes(id));
-            if(found) loadEdit(found.id); else alert('ไม่พบรหัสนี้');
-        }
-
-        function loadEdit(id) {
-            const item = researchData.find(r => r.id === id);
-            if(!item) return;
-            document.getElementById('editId').value = item.id;
-            document.getElementById('piName').value = item.pi;
-            document.getElementById('titleName').value = item.title;
-            currentCoResearchers = [...item.co]; renderTags();
-            
-            document.getElementById('m1').value = item.stats.m1; document.getElementById('sd1').value = item.stats.sd1; document.getElementById('n1').value = item.stats.n1;
-            document.getElementById('m2').value = item.stats.m2; document.getElementById('sd2').value = item.stats.sd2; document.getElementById('n2').value = item.stats.n2;
-            
-            calculatePreview();
-            document.querySelector('header').scrollIntoView({behavior:'smooth'});
-        }
-
-        function resetForm() {
-            document.getElementById('editId').value = '';
-            document.querySelectorAll('input').forEach(i => i.value = (i.type=='number'?0:''));
-            currentCoResearchers = []; renderTags();
-            document.getElementById('resultBox').style.display = 'none';
-        }
-    </script>
 </body>
 </html>
